@@ -14,7 +14,7 @@ docker compose up -d
 - mailcatcher - http://localhost:1080
 - postgresql - localhost:5432
 
-# Widget Development
+# Widget Development (WIP)
 
 ## Prerequisite
 
