@@ -14,6 +14,9 @@ docker compose up -d
 - mailcatcher - http://localhost:1080
 - postgresql - localhost:5432
 
+username: `user`
+passowrd: `bitnami`
+
 # Plugin Development (WIP)
 
 ```bash
