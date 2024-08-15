@@ -10,7 +10,9 @@ services:
       POSTGRESQL_DATABASE: bitnami_moodle
       POSTGRESQL_PASSWORD: bitnami1
   moodle:
-    image: docker.io/bitnami/moodle:4.4
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "8080:8080"
     environment:
@@ -23,8 +25,10 @@ services:
       MOODLE_SMTP_HOST: mail
       MOODLE_SMTP_PORT: 1025
     volumes:
-      - "moodle_data:/bitnami/moodle"
-      - "moodledata_data:/bitnami/moodledata"
+      - ./localfs/opt/bitnami/php/etc/php.ini:/opt/bitnami/php/etc/php.ini
+      - ./localfs/bitnami/moodle:/bitnami/moodle
+      - moodledata_data:/bitnami/moodledata
+      - ${PLUGIN_MOUNT:-tmp:/tmp}
     depends_on:
       - db
     restart: always
@@ -36,6 +40,8 @@ services:
       - "1025:1025"
 
 volumes:
+  tmp:
+    driver: local
   postgresql_data:
     driver: local
   moodle_data:
