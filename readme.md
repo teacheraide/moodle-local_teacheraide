@@ -1,51 +1,38 @@
-# Quick Start
+## Installing via uploaded ZIP file
 
-## Prerequisite
+1. Log in to your Moodle site as an admin and go to _Site administration >
+   Plugins > Install plugins_.
+2. Upload the ZIP file with the plugin code. You should only be prompted to add
+   extra details if your plugin type is not automatically detected.
+3. Check the plugin validation report and finish the installation.
 
-- [docker](https://www.docker.com/products/docker-desktop)
-- git
+## Installing manually
 
-see https://github.com/moodlehq/moodle-docker?tab=readme-ov-file#quick-start
+The plugin can be also installed by putting the contents of this directory to
 
-## Start development with moodle-docker
+    {your/moodle/dirroot}/local/teacheraide
 
-```bash
+Afterwards, log in to your Moodle site as an admin and go to _Site administration >
+Notifications_ to complete the installation.
 
-git clone git@github.com:moodlehq/moodle-docker.git
+Alternatively, you can run
 
-cd moodle-docker
+    $ php admin/cli/upgrade.php
 
-# Change ./moodle to your /path/to/moodle if you already have it checked out
-export MOODLE_DOCKER_WWWROOT=./moodle
+to complete the installation from the command line.
 
-# Choose a db server (Currently supported: pgsql, mariadb, mysql, mssql, oracle)
-export MOODLE_DOCKER_DB=pgsql
+## License
 
-# Get Moodle code, you could select another version branch (skip this if you already got the code)
-git clone -b MOODLE_404_STABLE git://git.moodle.org/moodle.git $MOODLE_DOCKER_WWWROOT
+2024 Your Name <you@example.com>
 
-# Ensure customized config.php for the Docker containers is in place
-cp config.docker-template.php $MOODLE_DOCKER_WWWROOT/config.php
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version.
 
-# Start up containers
-bin/moodle-docker-compose up -d
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-```
-
-## Clone teacheraide plugin
-
-```bash
-# Stay inside path/to/moodle-docker/
-
-git clone git@github.com:teacheraide/moodle-local_teacheraide.git "$MOODLE_DOCKER_WWWROOT/local/teacheraide"
-bin/moodle-docker-compose exec webserver php admin/cli/upgrade.php
-```
-
-## Start widget development (WIP)
-
-## Stop moodle-docker
-
-```bash
-# Shut down and destroy containers
-bin/moodle-docker-compose down
-```
+You should have received a copy of the GNU General Public License along with
+this program. If not, see <https://www.gnu.org/licenses/>.
