@@ -45,8 +45,6 @@ go to http://localhost:8000 to complete setup
 
 once logged in as admin, go to Site Administration > Development > Make test course - to generate a course
 
-## Start widget development (WIP)
-
 ## Stop moodle-docker
 
 ```bash
