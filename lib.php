@@ -31,16 +31,4 @@
 //   'categoryid' => "world",
 // ]]);
 
-function local_teacheraide_js()
-{
-  global $PAGE;
-  $PAGE->requires->js_call_amd('local_teacheraide/app-lazy', 'init', [[
-    'courseid' => "hello",
-    'categoryid' => "world",
-  ]]);
-}
-
-function local_teacheraide_before_footer()
-{
-  local_teacheraide_js();
-}
+function local_teacheraide_js() {}

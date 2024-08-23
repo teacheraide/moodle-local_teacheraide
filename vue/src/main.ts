@@ -1,7 +1,6 @@
 import { defineCustomElement } from 'vue'
-import './assets/main.css'
+import HelloWorld from './components/HelloWorld.vue'
 
-const HelloWorld = import('./components/HelloWorld.vue')
 const HelloWorldElement = defineCustomElement(HelloWorld)
 
 function init({ courseid, categoryid }: { courseid: string; categoryid: string }) {
