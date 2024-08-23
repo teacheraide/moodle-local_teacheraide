@@ -4,7 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite build --watch --emptyOutDir --mode development",
+    "dev": "concurrently \"npm:dev:*\"",
+    "dev:dev": "vite build --watch --emptyOutDir --mode development",
+    "dev:prod": "vite build --watch --emptyOutDir --mode production --minify=false --sourcemap=true",
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "build-only": "vite build",

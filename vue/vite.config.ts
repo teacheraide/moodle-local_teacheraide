@@ -23,8 +23,8 @@ export default defineConfig(({ mode }) => {
       vueDevTools()
     ],
     build: {
-      // outDir: resolve(__dirname, `../amd/${mode === 'production' ? 'build' : 'src'}`),
-      outDir: resolve(__dirname, `../amd/build`),
+      outDir: resolve(__dirname, `../amd/${mode === 'production' ? 'build' : 'src'}`),
+      // outDir: resolve(__dirname, `../amd/build`),
       assetsDir: 'dist',
       rollupOptions: {
         preserveEntrySignatures: 'strict',
@@ -33,8 +33,8 @@ export default defineConfig(({ mode }) => {
         },
         output: {
           format: 'amd',
-          // entryFileNames: `app-lazy${mode === 'production' ? '.min' : ''}.js`,
-          entryFileNames: `app-lazy.min.js`,
+          entryFileNames: `app-lazy${mode === 'production' ? '.min' : ''}.js`,
+          // entryFileNames: `app-lazy.min.js`,
           amd: {
             define: 'define'
           }
