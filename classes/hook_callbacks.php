@@ -35,7 +35,6 @@ class hook_callbacks
 
   public static function after_standard_main_region_html_generation(after_standard_main_region_html_generation $hook): void
   {
-
     $hook->add_html($hook->renderer->render_from_template('local_teacheraide/test', [
       'courseid' => "hello",
       'categoryid' => "world",
