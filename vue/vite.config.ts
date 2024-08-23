@@ -12,6 +12,9 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [
       vue({
+        features: {
+          customElement: true
+        },
         template: {
           compilerOptions: {
             // treat all tags with a dash as custom elements
