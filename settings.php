@@ -26,16 +26,16 @@
 defined('MOODLE_INTERNAL') || die();
 
 if ($hassiteconfig) {
-    $settings = new admin_settingpage('local_teacheraide_settings', new lang_string('pluginname', 'local_teacheraide'));
-    $settingspage = new admin_settingpage('managelocalteacheraide', new lang_string('manage', 'local_teacheraide'));
+    $settings = new admin_settingpage('local_teacheraide_settings', get_string('pluginname', 'local_teacheraide'));
+    $settingspage = new admin_settingpage('managelocalteacheraide', get_string('manage', 'local_teacheraide'));
 
     // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedIf
     if ($ADMIN->fulltree) {
         // Define actual plugin settings page and add it to the tree - {@link https://docs.moodle.org/dev/Admin_settings}.
         $settingspage->add(new admin_setting_configtext(
             'local_teacheraide/ai_api_key',
-            new lang_string('ai_api_key', 'local_teacheraide'),
-            new lang_string('ai_api_key_desc', 'local_teacheraide'),
+            get_string('ai_api_key', 'local_teacheraide'),
+            get_string('ai_api_key_desc', 'local_teacheraide'),
             "",
             PARAM_TEXT,
             50

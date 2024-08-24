@@ -29,3 +29,6 @@ $string['pluginname'] = 'teacheraide';
 $string['manage'] = 'TeacherAIde';
 $string['ai_api_key'] = 'AI API Key';
 $string['ai_api_key_desc'] = 'Enter your AI API Key here.';
+$string["navbar_label"] = "TeacherAIde Test Page";
+$string["test_page_title"] = "TeacherAIde Test Page";
+$string["test_page_heading"] = "TeacherAIde Test Page";

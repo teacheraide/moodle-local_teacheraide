@@ -18,14 +18,34 @@
  * Plugin version and other meta-data are defined here.
  *
  * @package     local_teacheraide
- * @copyright   2024 Your Name <you@example.com>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+require(__DIR__ . '/../../config.php');
 
-$plugin->component = 'local_teacheraide';
-$plugin->release = '0.1.0';
-$plugin->version = 2024082409;
-$plugin->requires = 2022112800;
-$plugin->maturity = MATURITY_ALPHA;
+use \core\context\system;
+
+global $SITE, $PAGE, $OUTPUT;
+
+$PAGE->set_pagetype('site-index');
+$context = system::instance();
+$PAGE->set_context($context);
+$PAGE->set_pagelayout('standard');
+
+$PAGE->set_title($SITE->fullname . ': ' . get_string('pluginname', 'local_teacheraide'));
+// $PAGE->set_heading($SITE->fullname);
+$PAGE->set_url(new moodle_url('/local/teacheraide/view.php'));
+
+$PAGE->navbar->add(get_string('pluginname', 'local_teacheraide'), new moodle_url('/local/teacheraide/view.php'));
+
+require_login();
+
+echo $OUTPUT->header();
+// echo $OUTPUT->heading(get_string('test_page_heading', 'local_teacheraide'), 1);
+
+echo $OUTPUT->box_start();
+echo $OUTPUT->render_from_template('local_teacheraide/fullpage', [
+  'msg' => "Hello World Full Page",
+]);
+echo $OUTPUT->box_end();
+echo $OUTPUT->footer();
