@@ -33,12 +33,19 @@ if ($hassiteconfig) {
     if ($ADMIN->fulltree) {
         // Define actual plugin settings page and add it to the tree - {@link https://docs.moodle.org/dev/Admin_settings}.
         $settingspage->add(new admin_setting_configtext(
-            'local_teacheraide/ai_api_key',
-            get_string('ai_api_key', 'local_teacheraide'),
-            get_string('ai_api_key_desc', 'local_teacheraide'),
+            'local_teacheraide/api_endpoint',
+            get_string('api_endpoint', 'local_teacheraide'),
+            get_string('api_endpoint_desc', 'local_teacheraide'),
             "",
             PARAM_TEXT,
             50
+        ));
+
+        $settingspage->add(new admin_setting_configpasswordunmask(
+            'local_teacheraide/api_key',
+            get_string('api_key', 'local_teacheraide'),
+            get_string('api_key_desc', 'local_teacheraide'),
+            "",
         ));
     }
 

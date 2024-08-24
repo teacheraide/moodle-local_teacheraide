@@ -27,8 +27,11 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'teacheraide';
 $string['manage'] = 'TeacherAIde';
-$string['ai_api_key'] = 'AI API Key';
-$string['ai_api_key_desc'] = 'Enter your AI API Key here.';
 $string["navbar_label"] = "TeacherAIde Test Page";
 $string["test_page_title"] = "TeacherAIde Test Page";
 $string["test_page_heading"] = "TeacherAIde Test Page";
+
+$string['api_endpoint'] = 'Azure OpenAI Endpoint';
+$string['api_endpoint_desc'] = 'Enter your Azure OpenAI Endpoint here.';
+$string['api_key'] = 'Azure OpenAI Key';
+$string['api_key_desc'] = 'Enter your Azure OpenAI Key here.';
