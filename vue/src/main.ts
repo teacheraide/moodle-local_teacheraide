@@ -8,6 +8,7 @@ interface InitParams {
   apiVersion: string;
   deployment: string;
   apiKey: string;
+  baseUrl: string;
 }
 
 function init({ apiVersion, deployment, endpoint, apiKey }: InitParams) {

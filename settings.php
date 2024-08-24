@@ -36,7 +36,7 @@ if ($hassiteconfig) {
             'local_teacheraide/api_endpoint',
             get_string('api_endpoint', 'local_teacheraide'),
             get_string('api_endpoint_desc', 'local_teacheraide'),
-            "",
+            "https://teacheraide-demo-eastus.openai.azure.com",
             PARAM_TEXT,
             50
         ));
