@@ -47,6 +47,24 @@ if ($hassiteconfig) {
             get_string('api_key_desc', 'local_teacheraide'),
             "",
         ));
+
+        $settingspage->add(new admin_setting_configtext(
+            'local_teacheraide/api_version',
+            get_string('api_version', 'local_teacheraide'),
+            get_string('api_version_desc', 'local_teacheraide'),
+            "2024-02-15-preview",
+            PARAM_TEXT,
+            50
+        ));
+
+        $settingspage->add(new admin_setting_configtext(
+            'local_teacheraide/api_deployment',
+            get_string('api_deployment', 'local_teacheraide'),
+            get_string('api_deployment_desc', 'local_teacheraide'),
+            "gpt-4o-mini",
+            PARAM_TEXT,
+            50
+        ));
     }
 
     $ADMIN->add('localplugins', $settingspage);

@@ -26,11 +26,13 @@ class hook_callbacks
   public static function before_standard_head_html_generation(before_standard_head_html_generation $hook): void
   {
     global $PAGE;
+
+    // this is not secure to expose the API key to client side, but let's do it for now
     $PAGE->requires->js_call_amd('local_teacheraide/app-lazy', 'init', [[
-      'courseid' => "hello",
-      'categoryid' => "world",
-      // 'baseurl' => $PAGE->url->out(false), we want to pass the baseurl from the server to the init script, then there's no need to do that in the custom element
-      'sesskey' => sesskey(),
+      "endpoint" => get_config('local_teacheraide', 'api_endpoint'),
+      "apiVersion" => get_config('local_teacheraide', 'api_version'),
+      "deployment" => get_config('local_teacheraide', 'api_deployment'),
+      "apiKey" => get_config('local_teacheraide', 'api_key'),
     ]]);
   }
   public static function before_footer_html_generation(before_footer_html_generation $hook): void {}
