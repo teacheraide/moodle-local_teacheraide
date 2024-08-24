@@ -26,19 +26,23 @@ class hook_callbacks
   public static function before_standard_head_html_generation(before_standard_head_html_generation $hook): void
   {
     global $PAGE;
+
+    // this is not secure to expose the API key to client side, but let's do it for now
     $PAGE->requires->js_call_amd('local_teacheraide/app-lazy', 'init', [[
-      'courseid' => "hello",
-      'categoryid' => "world",
+      "endpoint" => get_config('local_teacheraide', 'api_endpoint'),
+      "apiVersion" => get_config('local_teacheraide', 'api_version'),
+      "deployment" => get_config('local_teacheraide', 'api_deployment'),
+      "apiKey" => get_config('local_teacheraide', 'api_key'),
     ]]);
   }
   public static function before_footer_html_generation(before_footer_html_generation $hook): void {}
 
   public static function after_standard_main_region_html_generation(after_standard_main_region_html_generation $hook): void
   {
-    $hook->add_html($hook->renderer->render_from_template('local_teacheraide/test', [
-      'courseid' => "hello",
-      'categoryid' => "world",
-    ]));
+    // // test widget
+    // $hook->add_html($hook->renderer->render_from_template('local_teacheraide/test', [
+    //   'msg' => "Hello World",
+    // ]));
   }
 
   public static function before_standard_top_of_body_html_generation(before_standard_top_of_body_html_generation $hook): void {}

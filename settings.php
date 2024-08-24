@@ -26,17 +26,42 @@
 defined('MOODLE_INTERNAL') || die();
 
 if ($hassiteconfig) {
-    $settings = new admin_settingpage('local_teacheraide_settings', new lang_string('pluginname', 'local_teacheraide'));
-    $settingspage = new admin_settingpage('managelocalteacheraide', new lang_string('manage', 'local_teacheraide'));
+    $settings = new admin_settingpage('local_teacheraide_settings', get_string('pluginname', 'local_teacheraide'));
+    $settingspage = new admin_settingpage('managelocalteacheraide', get_string('manage', 'local_teacheraide'));
 
     // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedIf
     if ($ADMIN->fulltree) {
         // Define actual plugin settings page and add it to the tree - {@link https://docs.moodle.org/dev/Admin_settings}.
         $settingspage->add(new admin_setting_configtext(
-            'local_teacheraide/ai_api_key',
-            new lang_string('ai_api_key', 'local_teacheraide'),
-            new lang_string('ai_api_key_desc', 'local_teacheraide'),
+            'local_teacheraide/api_endpoint',
+            get_string('api_endpoint', 'local_teacheraide'),
+            get_string('api_endpoint_desc', 'local_teacheraide'),
+            "https://teacheraide-demo-eastus.openai.azure.com",
+            PARAM_TEXT,
+            50
+        ));
+
+        $settingspage->add(new admin_setting_configpasswordunmask(
+            'local_teacheraide/api_key',
+            get_string('api_key', 'local_teacheraide'),
+            get_string('api_key_desc', 'local_teacheraide'),
             "",
+        ));
+
+        $settingspage->add(new admin_setting_configtext(
+            'local_teacheraide/api_version',
+            get_string('api_version', 'local_teacheraide'),
+            get_string('api_version_desc', 'local_teacheraide'),
+            "2024-02-15-preview",
+            PARAM_TEXT,
+            50
+        ));
+
+        $settingspage->add(new admin_setting_configtext(
+            'local_teacheraide/api_deployment',
+            get_string('api_deployment', 'local_teacheraide'),
+            get_string('api_deployment_desc', 'local_teacheraide'),
+            "gpt-4o-mini",
             PARAM_TEXT,
             50
         ));
