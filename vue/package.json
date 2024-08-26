@@ -17,6 +17,7 @@
   "dependencies": {
     "@azure/identity": "^4.4.1",
     "@azure/openai": "^2.0.0-beta.1",
+    "@headlessui/vue": "^1.7.22",
     "@tanstack/vue-query": "^5.52.0",
     "@vueuse/core": "^11.0.1",
     "openai": "^4.56.0",
