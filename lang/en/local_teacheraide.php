@@ -33,8 +33,8 @@ $string["test_page_heading"] = "TeacherAIde Test Page";
 
 $string['api_endpoint'] = 'Endpoint';
 $string['api_endpoint_desc'] = 'Enter your Endpoint / Host here.';
-$string['api_base_url'] = 'Endpoint';
-$string['api_base_url_desc'] = 'Enter your OpenAI compatible BaseURL here.';
+$string['api_base_url'] = 'Base URL';
+$string['api_base_url_desc'] = 'Enter your OpenAI compatible Base URL here.';
 $string['api_key'] = 'OpenAI API Key';
 $string['api_key_desc'] = 'Enter your OpenAI API Key here.';
 $string["api_version"] = "OpenAI Version";
