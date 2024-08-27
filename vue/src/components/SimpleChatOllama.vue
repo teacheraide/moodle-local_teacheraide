@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { useClients } from "@/provider";
+import { useAI } from "@/provider";
 import type { Message } from "ollama";
 import { ref } from "vue";
 
 const messages = ref<Message[]>([]);
 const newMessage = ref("");
 
-const { ollama, model } = useClients();
+const { ollama, model } = useAI();
 
 const sendMessage = async () => {
   if (!newMessage.value) return;

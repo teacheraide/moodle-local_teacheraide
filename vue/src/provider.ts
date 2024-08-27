@@ -1,21 +1,19 @@
 import { inject, type App } from "vue";
-import { OpenAI } from "openai";
 import { Ollama } from "ollama/browser";
 
-const CLIENTS_PROVIDER = Symbol("clients");
+const AI_CLIENT_PROVIDER = Symbol("client");
 
-type OpenAIProvider = { openai: OpenAI; model: string; ollama: Ollama };
+type AIClientProvider = { model: string; ollama: Ollama };
 
 export const configureAppWithProviders =
-  ({ openai, model, ollama }: OpenAIProvider) =>
+  ({ model, ollama }: AIClientProvider) =>
   (app: App) => {
-    app.provide(CLIENTS_PROVIDER, {
-      openai,
+    app.provide(AI_CLIENT_PROVIDER, {
       model,
       ollama,
     });
   };
 
-export function useClients() {
-  return inject<OpenAIProvider>(CLIENTS_PROVIDER)!;
+export function useAI() {
+  return inject<AIClientProvider>(AI_CLIENT_PROVIDER)!;
 }
