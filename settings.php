@@ -32,22 +32,32 @@ if ($hassiteconfig) {
     // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedIf
     if ($ADMIN->fulltree) {
         // Define actual plugin settings page and add it to the tree - {@link https://docs.moodle.org/dev/Admin_settings}.
+        // $settingspage->add(new admin_setting_configtext(
+        //     'local_teacheraide/api_endpoint',
+        //     get_string('api_endpoint', 'local_teacheraide'),
+        //     get_string('api_endpoint_desc', 'local_teacheraide'),
+        //     // "https://teacheraide-demo-eastus.openai.azure.com",
+        //     "http://127.0.0.1:11434",
+        //     PARAM_TEXT,
+        //     50
+        // ));
+
         $settingspage->add(new admin_setting_configtext(
-            'local_teacheraide/api_endpoint',
-            get_string('api_endpoint', 'local_teacheraide'),
-            get_string('api_endpoint_desc', 'local_teacheraide'),
+            'local_teacheraide/api_base_url',
+            get_string('api_base_url', 'local_teacheraide'),
+            get_string('api_base_url_desc', 'local_teacheraide'),
             // "https://teacheraide-demo-eastus.openai.azure.com",
-            "http://127.0.0.1:11434",
+            "http://127.0.0.1:11434/v1",
             PARAM_TEXT,
             50
         ));
 
-        // $settingspage->add(new admin_setting_configpasswordunmask(
-        //     'local_teacheraide/api_key',
-        //     get_string('api_key', 'local_teacheraide'),
-        //     get_string('api_key_desc', 'local_teacheraide'),
-        //     "",
-        // ));
+        $settingspage->add(new admin_setting_configpasswordunmask(
+            'local_teacheraide/api_key',
+            get_string('api_key', 'local_teacheraide'),
+            get_string('api_key_desc', 'local_teacheraide'),
+            "",
+        ));
 
         // $settingspage->add(new admin_setting_configtext(
         //     'local_teacheraide/api_version',
@@ -58,10 +68,19 @@ if ($hassiteconfig) {
         //     50
         // ));
 
+        // $settingspage->add(new admin_setting_configtext(
+        //     'local_teacheraide/api_deployment',
+        //     get_string('api_deployment', 'local_teacheraide'),
+        //     get_string('api_deployment_desc', 'local_teacheraide'),
+        //     "llama3.1",
+        //     PARAM_TEXT,
+        //     50
+        // ));
+
         $settingspage->add(new admin_setting_configtext(
-            'local_teacheraide/api_deployment',
-            get_string('api_deployment', 'local_teacheraide'),
-            get_string('api_deployment_desc', 'local_teacheraide'),
+            'local_teacheraide/api_model',
+            get_string('api_model', 'local_teacheraide'),
+            get_string('api_model_desc', 'local_teacheraide'),
             "llama3.1",
             PARAM_TEXT,
             50

@@ -2,19 +2,20 @@ import SimpleChat from "./components/SimpleChat.vue";
 import { configureAppWithProviders } from "./provider";
 
 import { defineCustomElement } from "vue";
-import { Ollama } from "ollama/browser";
+import { OpenAI } from "openai";
 interface InitParams {
   endpoint: string;
   apiVersion: string;
   deployment: string;
   apiKey: string;
-  baseUrl: string;
+  baseURL: string;
+  model: string;
 }
 
-function init({ deployment, endpoint }: InitParams) {
-  const ollama = new Ollama({ host: endpoint });
+function init({ apiKey, baseURL, model }: InitParams) {
+  const client = new OpenAI({ baseURL, apiKey, dangerouslyAllowBrowser: true });
 
-  const configureApp = configureAppWithProviders({ model: deployment, ollama });
+  const configureApp = configureAppWithProviders({ model, client });
 
   const SimpleChatElement = defineCustomElement(SimpleChat, { configureApp });
 
