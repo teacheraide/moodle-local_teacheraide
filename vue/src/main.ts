@@ -1,8 +1,8 @@
-import { AzureOpenAI } from "openai";
 import SimpleChat from "./components/SimpleChat.vue";
 import { configureAppWithProviders } from "./provider";
 
 import { defineCustomElement } from "vue";
+import { Ollama } from "ollama/browser";
 interface InitParams {
   endpoint: string;
   apiVersion: string;
@@ -11,35 +11,10 @@ interface InitParams {
   baseUrl: string;
 }
 
-function init({ apiVersion, deployment, endpoint, apiKey }: InitParams) {
-  console.log(apiVersion, deployment, endpoint, apiKey);
+function init({ deployment, endpoint }: InitParams) {
+  const ollama = new Ollama({ host: endpoint });
 
-  const openai = new AzureOpenAI({
-    apiVersion,
-    deployment,
-    endpoint,
-    apiKey,
-    dangerouslyAllowBrowser: true,
-    // fetch: async (input: RequestInfo, init?: RequestInit) => {
-    //   console.log("input", input, init);
-
-    //   const responses = await fetchMany([
-    //     {
-    //       methodname: functionName,
-    //       args: {
-    //         endpoint: input.toString().replace(baseUrl, ""),
-    //         method: init?.method,
-    //         params: JSON.stringify(init?.body),
-    //       },
-    //     },
-    //   ]);
-
-    //   // const response = await fetch(fullUrl, init);
-    //   return responses[0];
-    // },
-  });
-
-  const configureApp = configureAppWithProviders({ openai, model: deployment });
+  const configureApp = configureAppWithProviders({ model: deployment, ollama });
 
   const SimpleChatElement = defineCustomElement(SimpleChat, { configureApp });
 

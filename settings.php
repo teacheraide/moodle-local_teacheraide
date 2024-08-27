@@ -36,32 +36,33 @@ if ($hassiteconfig) {
             'local_teacheraide/api_endpoint',
             get_string('api_endpoint', 'local_teacheraide'),
             get_string('api_endpoint_desc', 'local_teacheraide'),
-            "https://teacheraide-demo-eastus.openai.azure.com",
+            // "https://teacheraide-demo-eastus.openai.azure.com",
+            "http://127.0.0.1:11434",
             PARAM_TEXT,
             50
         ));
 
-        $settingspage->add(new admin_setting_configpasswordunmask(
-            'local_teacheraide/api_key',
-            get_string('api_key', 'local_teacheraide'),
-            get_string('api_key_desc', 'local_teacheraide'),
-            "",
-        ));
+        // $settingspage->add(new admin_setting_configpasswordunmask(
+        //     'local_teacheraide/api_key',
+        //     get_string('api_key', 'local_teacheraide'),
+        //     get_string('api_key_desc', 'local_teacheraide'),
+        //     "",
+        // ));
 
-        $settingspage->add(new admin_setting_configtext(
-            'local_teacheraide/api_version',
-            get_string('api_version', 'local_teacheraide'),
-            get_string('api_version_desc', 'local_teacheraide'),
-            "2024-02-15-preview",
-            PARAM_TEXT,
-            50
-        ));
+        // $settingspage->add(new admin_setting_configtext(
+        //     'local_teacheraide/api_version',
+        //     get_string('api_version', 'local_teacheraide'),
+        //     get_string('api_version_desc', 'local_teacheraide'),
+        //     "2024-02-15-preview",
+        //     PARAM_TEXT,
+        //     50
+        // ));
 
         $settingspage->add(new admin_setting_configtext(
             'local_teacheraide/api_deployment',
             get_string('api_deployment', 'local_teacheraide'),
             get_string('api_deployment_desc', 'local_teacheraide'),
-            "gpt-4o-mini",
+            "llama3.1",
             PARAM_TEXT,
             50
         ));

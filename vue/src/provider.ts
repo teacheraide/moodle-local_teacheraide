@@ -1,20 +1,19 @@
 import { inject, type App } from "vue";
-import { AzureOpenAI } from "openai";
-import { VueQueryPlugin } from "@tanstack/vue-query";
+import { Ollama } from "ollama/browser";
 
-const OPENAI_PROVIDER = Symbol("openai");
+const AI_CLIENT_PROVIDER = Symbol("client");
 
-type OpenAIProvider = { openai: AzureOpenAI; model: string };
+type AIClientProvider = { model: string; ollama: Ollama };
 
 export const configureAppWithProviders =
-  ({ openai, model }: OpenAIProvider) =>
+  ({ model, ollama }: AIClientProvider) =>
   (app: App) => {
-    app.use(VueQueryPlugin).provide(OPENAI_PROVIDER, {
-      openai,
+    app.provide(AI_CLIENT_PROVIDER, {
       model,
+      ollama,
     });
   };
 
-export function useOpenAI() {
-  return inject<OpenAIProvider>(OPENAI_PROVIDER)!;
+export function useAI() {
+  return inject<AIClientProvider>(AI_CLIENT_PROVIDER)!;
 }
