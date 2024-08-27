@@ -1,4 +1,4 @@
-import SimpleChatOllama from "./components/SimpleChatOllama.vue";
+import SimpleChat from "./components/SimpleChat.vue";
 import { configureAppWithProviders } from "./provider";
 
 import { defineCustomElement } from "vue";
@@ -11,15 +11,15 @@ interface InitParams {
   baseUrl: string;
 }
 
-function init({ deployment, apiKey, endpoint }: InitParams) {
+function init({ deployment, endpoint }: InitParams) {
   const ollama = new Ollama({ host: endpoint });
 
   const configureApp = configureAppWithProviders({ model: deployment, ollama });
 
-  const SimpleChatElementOllama = defineCustomElement(SimpleChatOllama, { configureApp });
+  const SimpleChatElement = defineCustomElement(SimpleChat, { configureApp });
 
   // Register the custom element
-  customElements.define("teacheraide-simple-chat", SimpleChatElementOllama);
+  customElements.define("teacheraide-simple-chat", SimpleChatElement);
 }
 
 export { init };
