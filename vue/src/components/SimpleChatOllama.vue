@@ -1,14 +1,12 @@
 <script setup lang="ts">
 import { useClients } from "@/provider";
-import type { ChatCompletionCreateParamsNonStreaming } from "openai/resources/index.mjs";
+import type { Message } from "ollama";
 import { ref } from "vue";
 
-type ChatMessage = ChatCompletionCreateParamsNonStreaming["messages"][0];
-
-const messages = ref<ChatMessage[]>([]);
+const messages = ref<Message[]>([]);
 const newMessage = ref("");
 
-const { openai, model } = useClients();
+const { ollama, model } = useClients();
 
 const sendMessage = async () => {
   if (!newMessage.value) return;
@@ -18,13 +16,13 @@ const sendMessage = async () => {
     role: "user",
   });
 
-  const response = await openai.chat.completions.create({
+  const response = await ollama.chat({
     model,
     messages: messages.value,
   });
 
   messages.value.push({
-    content: response.choices[0].message.content,
+    content: response.message.content,
     role: "assistant",
   });
 

@@ -31,11 +31,11 @@ $string["navbar_label"] = "TeacherAIde Test Page";
 $string["test_page_title"] = "TeacherAIde Test Page";
 $string["test_page_heading"] = "TeacherAIde Test Page";
 
-$string['api_endpoint'] = 'Azure OpenAI Endpoint';
+$string['api_endpoint'] = 'Endpoint';
 $string['api_endpoint_desc'] = 'Enter your Azure OpenAI Endpoint here.';
-$string['api_key'] = 'Azure OpenAI Key';
+$string['api_key'] = 'OpenAI Key';
 $string['api_key_desc'] = 'Enter your Azure OpenAI Key here.';
-$string["api_version"] = "Azure OpenAI Version";
+$string["api_version"] = "OpenAI Version";
 $string["api_version_desc"] = "Enter your Azure OpenAI Version here.";
-$string["api_deployment"] = "Azure OpenAI Deployment";
+$string["api_deployment"] = "OpenAI Deployment";
 $string["api_deployment_desc"] = "Enter your Azure OpenAI Deployment here.";
