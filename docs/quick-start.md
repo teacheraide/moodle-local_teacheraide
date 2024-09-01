@@ -26,7 +26,34 @@ git clone -b MOODLE_404_STABLE git://git.moodle.org/moodle.git $MOODLE_DOCKER_WW
 
 # Ensure customized config.php for the Docker containers is in place
 cp config.docker-template.php $MOODLE_DOCKER_WWWROOT/config.php
+```
 
+you may want to keep your postgresql volume persistent, and expose the postgresql port, as well as mailpit port
+
+create `local.yml` with content below
+
+```yaml
+# local.yml
+
+services:
+  db:
+    ports:
+      - "5432:5432"
+    volumes:
+      - "db_data:/var/lib/postgresql/data"
+
+  mailpit:
+    ports:
+      - "8025:8025"
+
+volumes:
+  db_data:
+    driver: local
+```
+
+then run moodle-docker
+
+```bash
 # Start up containers
 bin/moodle-docker-compose up -d
 
