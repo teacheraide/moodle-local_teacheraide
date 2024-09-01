@@ -42,10 +42,6 @@ services:
     volumes:
       - "db_data:/var/lib/postgresql/data"
 
-  mailpit:
-    ports:
-      - "8025:8025"
-
 volumes:
   db_data:
     driver: local
@@ -71,6 +67,10 @@ bin/moodle-docker-compose exec webserver php admin/cli/upgrade.php
 go to http://localhost:8000 to complete setup
 
 once logged in as admin, go to Site Administration > Development > Make test course - to generate a course
+
+## useful urls
+
+- mailpit - http://localhost:8000/\_/mail
 
 ## Stop moodle-docker
 
