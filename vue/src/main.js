@@ -4,7 +4,7 @@ import { configureAppWithProviders } from "./provider";
 import { defineCustomElement } from "vue";
 import { OpenAI } from "openai";
 
-import registerTinyMCEPlugin from "./tinymce/register";
+import registerTinyMCEPlugin from "./tinymce/init";
 /**
  *
  * @param {object} options

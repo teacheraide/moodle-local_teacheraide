@@ -24,6 +24,7 @@
     "vue": "^3.5.0-beta.3"
   },
   "devDependencies": {
+    "tinymce": "6.8.3",
     "@rushstack/eslint-patch": "^1.8.0",
     "@tsconfig/node20": "^20.1.4",
     "@types/jsdom": "^21.1.7",
