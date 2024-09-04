@@ -32,7 +32,7 @@ export default defineConfig(({ mode }) => {
       rollupOptions: {
         preserveEntrySignatures: "strict",
         input: {
-          main: resolve(__dirname, "src/main.ts"),
+          main: resolve(__dirname, "src/main.js"),
         },
         output: {
           format: "amd",
@@ -52,6 +52,11 @@ export default defineConfig(({ mode }) => {
           "core/localstorage",
           "core/notification",
           "jquery",
+          "editor_tiny/loader",
+          "editor_tiny/utils",
+          "editor_tiny/options",
+          "editor_tiny/defaults",
+          "editor_tiny/uploader",
         ],
       },
       sourcemap: mode === "development" ? "inline" : false,
