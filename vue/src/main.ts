@@ -5,18 +5,17 @@ import { defineCustomElement } from "vue";
 import { OpenAI } from "openai";
 
 import registerTinyMCEPlugin from "./tinymce/init";
-/**
- *
- * @param {object} options
- * @param {string} options.endpoint
- * @param {string} options.apiVersion
- * @param {string} options.deployment
- * @param {string} options.apiKey
- * @param {string} options.baseURL
- * @param {string} options.model
- * @returns
- */
-async function init({ apiKey, baseURL, model }) {
+
+type InitOptions = {
+  endpoint: string;
+  apiVersion: string;
+  deployment: string;
+  apiKey: string;
+  baseURL: string;
+  model: string;
+};
+
+async function init({ apiKey, baseURL, model }: InitOptions) {
   const client = new OpenAI({ baseURL, apiKey, dangerouslyAllowBrowser: true });
 
   const configureApp = configureAppWithProviders({ model, client });

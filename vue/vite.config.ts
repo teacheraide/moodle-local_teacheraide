@@ -32,7 +32,7 @@ export default defineConfig(({ mode }) => {
       rollupOptions: {
         preserveEntrySignatures: "strict",
         input: {
-          main: resolve(__dirname, "src/main.js"),
+          main: resolve(__dirname, "src/main.ts"),
         },
         output: {
           format: "amd",
