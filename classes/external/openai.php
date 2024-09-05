@@ -18,12 +18,12 @@ class openai extends external_api
       array(
         'endpoint' => new external_value(PARAM_TEXT, 'The endpoint to call'),
         'method' => new external_value(PARAM_TEXT, 'The HTTP method to use'),
-        'params' => new external_value(PARAM_RAW, 'The parameters to pass to the endpoint')
+        'params' => new external_value(PARAM_RAW, 'The parameters to pass to the endpoint', VALUE_OPTIONAL, null)
       )
     );
   }
 
-  public static function passthrough($endpoint, $method, $params)
+  public static function passthrough($endpoint, $method, $params = null)
   {
     // Validate parameters
     $valid_params = self::validate_parameters(self::passthrough_parameters(), array('endpoint' => $endpoint, 'method' => $method, 'params' => $params));

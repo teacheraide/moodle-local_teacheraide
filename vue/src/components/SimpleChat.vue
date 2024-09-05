@@ -1,15 +1,23 @@
 <script setup lang="ts">
 import { useAI } from "@/provider";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import type { ChatCompletionCreateParamsNonStreaming } from "openai/resources/index.mjs";
 import { marked } from "marked";
 
 type ChatMessage = ChatCompletionCreateParamsNonStreaming["messages"][0];
 
+const models = ref<string[]>([]);
+const selectedModel = ref("");
+
 const messages = ref<ChatMessage[]>([{ role: "system", content: "You are a helpful assistant." }]);
 const newMessage = ref("");
 
-const { client, model } = useAI();
+const { client } = useAI();
+
+const fetchModels = async () => {
+  const response = await client.models.list();
+  models.value = response.data.map((model) => model.id);
+};
 
 const sendMessage = async () => {
   if (!newMessage.value) return;
@@ -20,7 +28,7 @@ const sendMessage = async () => {
   });
 
   const response = await client.chat.completions.create({
-    model,
+    model: selectedModel.value,
     messages: messages.value,
   });
 
@@ -31,6 +39,11 @@ const sendMessage = async () => {
 
   newMessage.value = "";
 };
+
+onMounted(async () => {
+  await fetchModels();
+  selectedModel.value = models.value[0];
+});
 </script>
 
 <template>
@@ -46,7 +59,16 @@ const sendMessage = async () => {
   <div class="max-w-lg mx-auto p-4 border border-gray-300 rounded-lg shadow-md">
     <div class="mb-4">
       <h2 class="text-xl font-semibold">Chat</h2>
-      <p class="text-gray-500">Model: {{ model }}</p>
+      <div class="mb-2">
+        <label for="model-select" class="block text-gray-700">Select Model:</label>
+        <select
+          id="model-select"
+          v-model="selectedModel"
+          class="select select-bordered select-sm w-full max-w-xs"
+        >
+          <option v-for="model in models" :key="model" :value="model">{{ model }}</option>
+        </select>
+      </div>
     </div>
     <div class="mb-4">
       <div v-for="(message, index) in messages" :key="index" class="mb-2">
