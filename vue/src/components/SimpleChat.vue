@@ -2,6 +2,7 @@
 import { useAI } from "@/provider";
 import { ref } from "vue";
 import type { ChatCompletionCreateParamsNonStreaming } from "openai/resources/index.mjs";
+import { marked } from "marked";
 
 type ChatMessage = ChatCompletionCreateParamsNonStreaming["messages"][0];
 
@@ -53,12 +54,11 @@ const sendMessage = async () => {
           <p class="text-gray-500">{{ message.content }}</p>
         </div>
         <div v-if="message.role !== 'system'" :class="{ 'text-right': message.role === 'user' }">
-          <p
+          <div
             class="inline-block p-2 rounded-lg"
             :class="message.role === 'user' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-black'"
-          >
-            {{ message.content }}
-          </p>
+            v-html="marked.parse(message.content as string)"
+          ></div>
         </div>
       </div>
     </div>
