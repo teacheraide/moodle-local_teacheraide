@@ -77,14 +77,14 @@ if ($hassiteconfig) {
         //     50
         // ));
 
-        $settingspage->add(new admin_setting_configtext(
-            'local_teacheraide/api_model',
-            get_string('api_model', 'local_teacheraide'),
-            get_string('api_model_desc', 'local_teacheraide'),
-            "llama3.1",
-            PARAM_TEXT,
-            50
-        ));
+        // $settingspage->add(new admin_setting_configtext(
+        //     'local_teacheraide/api_model',
+        //     get_string('api_model', 'local_teacheraide'),
+        //     get_string('api_model_desc', 'local_teacheraide'),
+        //     "llama3.1",
+        //     PARAM_TEXT,
+        //     50
+        // ));
     }
 
     $ADMIN->add('localplugins', $settingspage);
