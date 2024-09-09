@@ -5,27 +5,25 @@ import { defineCustomElement } from "vue";
 import { OpenAI } from "openai";
 
 import registerTinyMCEPlugin from "./tinymce/init";
+import { webserviceBaseUrl, webserviceFetch } from "./webservice";
 
-type InitOptions = {
-  endpoint: string;
-  apiVersion: string;
-  deployment: string;
-  apiKey: string;
-  baseURL: string;
-  model: string;
-};
+async function init() {
+  const client = new OpenAI({
+    baseURL: webserviceBaseUrl,
+    apiKey: "dummy",
+    dangerouslyAllowBrowser: true,
+    fetch: webserviceFetch,
+  });
 
-async function init({ apiKey, baseURL, model }: InitOptions) {
-  const client = new OpenAI({ baseURL, apiKey, dangerouslyAllowBrowser: true });
-
-  const configureApp = configureAppWithProviders({ model, client });
-
-  const SimpleChatElement = defineCustomElement(SimpleChat, { configureApp });
+  const configureApp = configureAppWithProviders({ client });
 
   await registerTinyMCEPlugin();
 
   // Register the custom element
-  customElements.define("teacheraide-simple-chat", SimpleChatElement);
+  customElements.define(
+    "teacheraide-simple-chat",
+    defineCustomElement(SimpleChat, { configureApp }),
+  );
 }
 
 export { init };

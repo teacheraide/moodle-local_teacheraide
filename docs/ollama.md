@@ -6,9 +6,8 @@ see https://github.com/ollama/ollama
 
 it uses the same OpenAI sdk we just need to change the baseURL and model
 
-baseURL: `http://127.0.0.1:11434`
+baseURL: `http://host.docker.internal:11434/v1`
 apiKey: `<anything it will be ignored>`
-model: `<the model you're running>`
 
 ## 3. profit
 
