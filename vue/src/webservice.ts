@@ -6,10 +6,14 @@ interface RequestInit {
   params: string;
 }
 
-async function localTeacheraideOpenAIPassthrough({ endpoint, method, params }: RequestInit) {
+async function fetchThroughlocalTeacheraideOpenAIGateway({
+  endpoint,
+  method,
+  params,
+}: RequestInit) {
   return fetchMany([
     {
-      methodname: "local_teacheraide_openai_passthrough",
+      methodname: "local_teacheraide_openai_gateway",
       args: {
         endpoint,
         method,
@@ -21,10 +25,10 @@ async function localTeacheraideOpenAIPassthrough({ endpoint, method, params }: R
 
 const wwwroot = M.cfg.wwwroot;
 
-export const webserviceBaseUrl = `${wwwroot}/webservice/restful/server.php/local_teacheraide_openai_passthrough`;
+export const webserviceBaseUrl = `${wwwroot}/webservice/restful/server.php/local_teacheraide_openai_gateway`;
 
 export const webserviceFetch: typeof fetch = async (url, init) => {
-  const res = await localTeacheraideOpenAIPassthrough({
+  const res = await fetchThroughlocalTeacheraideOpenAIGateway({
     endpoint: `${url}`.replace(webserviceBaseUrl, ""), // Remove the base URL from the endpoint
     method: init?.method as string,
     params: init?.body as string, // body is already a string

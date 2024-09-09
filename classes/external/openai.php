@@ -12,7 +12,7 @@ defined('MOODLE_INTERNAL') || die();
 
 class openai extends external_api
 {
-  public static function passthrough_parameters()
+  public static function gateway_parameters()
   {
     return new external_function_parameters(
       array(
@@ -23,10 +23,10 @@ class openai extends external_api
     );
   }
 
-  public static function passthrough($endpoint, $method, $params = null)
+  public static function gateway($endpoint, $method, $params = null)
   {
     // Validate parameters
-    $valid_params = self::validate_parameters(self::passthrough_parameters(), array('endpoint' => $endpoint, 'method' => $method, 'params' => $params));
+    $valid_params = self::validate_parameters(self::gateway_parameters(), array('endpoint' => $endpoint, 'method' => $method, 'params' => $params));
 
     $request = [
       "endpoint" => $valid_params['endpoint'],
@@ -107,7 +107,7 @@ class openai extends external_api
     ];
   }
 
-  public static function passthrough_returns()
+  public static function gateway_returns()
   {
     return new external_single_structure(
       array(

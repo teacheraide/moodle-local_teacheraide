@@ -9,7 +9,7 @@ type ChatMessage = ChatCompletionCreateParamsNonStreaming["messages"][0];
 const models = ref<string[]>([]);
 const selectedModel = ref("");
 
-const messages = ref<ChatMessage[]>([{ role: "system", content: "You are a helpful assistant." }]);
+const messages = ref<ChatMessage[]>([{ role: "system", content: "You are a helpful assistant that helps teachers." }]);
 const newMessage = ref("");
 
 const { client } = useAI();
