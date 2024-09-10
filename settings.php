@@ -87,13 +87,14 @@ if ($hassiteconfig) {
         //     50
         // ));
 
-        $settingspage->add(new admin_setting_configtext(
+        $settingspage->add(new admin_setting_configtextarea(
             'local_teacheraide/system_prompt',
             get_string('system_prompt', 'local_teacheraide'),
             get_string('system_prompt_desc', 'local_teacheraide'),
             "You are a helpful assistant that aids teachers.",
             PARAM_TEXT,
-            50
+            50,
+            2
         ));
     }
 
