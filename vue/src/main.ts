@@ -7,7 +7,11 @@ import { OpenAI } from "openai";
 import registerTinyMCEPlugin from "./tinymce/init";
 import { webserviceBaseUrl, webserviceFetch } from "./webservice";
 
-async function init() {
+interface InitOptions {
+  systemPrompt: string;
+}
+
+async function init({ systemPrompt }: InitOptions) {
   const client = new OpenAI({
     baseURL: webserviceBaseUrl,
     apiKey: "dummy",
@@ -15,7 +19,7 @@ async function init() {
     fetch: webserviceFetch,
   });
 
-  const configureApp = configureAppWithProviders({ client });
+  const configureApp = configureAppWithProviders({ client, systemPrompt });
 
   await registerTinyMCEPlugin();
 

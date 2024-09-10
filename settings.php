@@ -47,7 +47,8 @@ if ($hassiteconfig) {
             get_string('api_base_url', 'local_teacheraide'),
             get_string('api_base_url_desc', 'local_teacheraide'),
             // "https://teacheraide-demo-eastus.openai.azure.com",
-            "http://127.0.0.1:11434/v1",
+            // "http://127.0.0.1:11434/v1",
+            "http://host.docker.internal:11434/v1",
             PARAM_TEXT,
             50
         ));
@@ -56,7 +57,7 @@ if ($hassiteconfig) {
             'local_teacheraide/api_key',
             get_string('api_key', 'local_teacheraide'),
             get_string('api_key_desc', 'local_teacheraide'),
-            "",
+            "YOUR_API_KEY",
         ));
 
         // $settingspage->add(new admin_setting_configtext(
@@ -85,6 +86,15 @@ if ($hassiteconfig) {
         //     PARAM_TEXT,
         //     50
         // ));
+
+        $settingspage->add(new admin_setting_configtext(
+            'local_teacheraide/system_prompt',
+            get_string('system_prompt', 'local_teacheraide'),
+            get_string('system_prompt_desc', 'local_teacheraide'),
+            "You are a helpful assistant that aids teachers.",
+            PARAM_TEXT,
+            50
+        ));
     }
 
     $ADMIN->add('localplugins', $settingspage);
