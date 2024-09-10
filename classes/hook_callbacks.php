@@ -35,6 +35,7 @@ class hook_callbacks
       // "apiKey" => get_config('local_teacheraide', 'api_key'),
       // "model" => get_config('local_teacheraide', 'api_model'),
       // "baseURL" => get_config('local_teacheraide', 'api_base_url'),
+      "systemPrompt" => get_config('local_teacheraide', 'system_prompt'),
     ]]);
   }
   public static function before_footer_html_generation(before_footer_html_generation $hook): void {}
