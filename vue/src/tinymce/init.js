@@ -4,30 +4,57 @@ import { getPluginMetadata } from "editor_tiny/utils";
 const component = "local_teacheraide";
 const pluginName = "local_teacheraide/tinymce";
 
-export default async function register() {
-  // Note: The PluginManager.add function does not support asynchronous configuration.
-  // Perform any asynchronous configuration here, and then call the PluginManager.add function.
+export default async function initTinyMCE() {
+  console.log("initTinyMCE function called");
+  try {
+    const [tinyMCE, pluginMetadata] = await Promise.all([
+      getTinyMCE(),
+      getPluginMetadata(component, pluginName),
+    ]);
 
-  /**
-   * @import tinymce from "tinymce";
-   * @type {[tinymce, object]}
-   */
-  const [tinyMCE, pluginMetadata] = await Promise.all([
-    getTinyMCE(),
-    getPluginMetadata(component, pluginName),
-    // getCommandSetup(),
-  ]);
+    console.log("TinyMCE and pluginMetadata loaded");
 
-  console.log(tinyMCE, "hello world");
-  // Reminder: Any asynchronous code must be run before this point.
-  tinyMCE.PluginManager.add(pluginName, (editor) => {
-    console.log(editor);
-    // Register any options that your plugin has
-    // registerOptions(editor);
-    // Setup any commands such as buttons, menu items, and so on.
-    // setupCommands(editor);
-    // Return the pluginMetadata object. This is used by TinyMCE to display a help link for your plugin.
-    // return pluginMetadata;
-    return pluginMetadata;
-  });
+    tinyMCE.PluginManager.add(pluginName, (editor) => {
+      // Plugin setup code
+      editor.ui.registry.addButton("teacheraide", {
+        text: "Teacher Aide",
+        onAction: () => {
+          // Button click handler
+          editor.windowManager.open({
+            title: "Teacher Aide",
+            body: {
+              type: "panel",
+              items: [
+                {
+                  type: "textarea",
+                  name: "content",
+                  label: "Enter your text",
+                },
+              ],
+            },
+            buttons: [
+              {
+                type: "submit",
+                text: "Insert",
+              },
+            ],
+            onSubmit: (api) => {
+              const data = api.getData();
+              editor.insertContent(data.content);
+              api.close();
+            },
+          });
+        },
+      });
+
+      return pluginMetadata;
+    });
+
+    console.log(`${pluginName} plugin registered successfully`);
+
+    return tinyMCE;
+  } catch (error) {
+    console.error(`Failed to register ${pluginName} plugin:`, error);
+    return undefined;
+  }
 }
