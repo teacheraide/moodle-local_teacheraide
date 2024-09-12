@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { useAI } from "@/provider";
-import { onMounted, ref, computed } from "vue"; // Import computed
+import { onMounted, ref, computed } from "vue"; 
+import CopyButton from "./CopyButton.vue"; 
 import type { ChatCompletionCreateParamsNonStreaming } from "openai/resources/index.mjs";
 import { marked } from "marked";
+
 
 type ChatMessage = ChatCompletionCreateParamsNonStreaming["messages"][0];
 
@@ -15,9 +17,10 @@ const messages = ref<ChatMessage[]>([{ role: "system", content: systemPrompt }])
 const newMessage = ref("");
 
 // Computed property to get the last assistant response
-const lastAssistantMessage = computed(() => {
+const lastAssistantMessage = computed<string>(() => {
   const reversedMessages = [...messages.value].reverse();
-  return reversedMessages.find((msg) => msg.role === "assistant")?.content || "";
+  const assistantMessage = reversedMessages.find((msg) => msg.role === "assistant")?.content;
+  return typeof assistantMessage === 'string' ? assistantMessage : "";
 });
 
 // Function to copy the last assistant message to the clipboard
@@ -99,6 +102,18 @@ onMounted(async () => {
         </div>
       </div>
     </div>
+   
+    <!-- Use CopyButton Component -->
+    <CopyButton :text="lastAssistantMessage" />
+    
+  
+      
+
+
+     
+    
+    
+    
     <div class="flex">
       <input
         v-model="newMessage"
@@ -120,3 +135,4 @@ onMounted(async () => {
 <style scoped>
 @import "../assets/main.css";
 </style>
+
