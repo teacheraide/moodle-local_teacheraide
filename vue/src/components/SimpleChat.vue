@@ -2,6 +2,7 @@
 import { useAI } from "@/provider";
 import { onMounted, ref, computed } from "vue"; 
 import CopyButton from "./CopyButton.vue"; 
+import ClearChat from './ClearChat.vue'; 
 import type { ChatCompletionCreateParamsNonStreaming } from "openai/resources/index.mjs";
 import { marked } from "marked";
 
@@ -32,6 +33,12 @@ const copyToClipboard = async (text: string) => {
     console.error("Failed to copy: ", err);
   }
 };
+
+// Function to clear the chat
+const clearChatFunction = () => {
+  messages.value = [{ role: "system", content: systemPrompt }];
+};
+
 const fetchModels = async () => {
   const response = await client.models.list();
   models.value = response.data.map((model) => model.id);
@@ -103,11 +110,16 @@ onMounted(async () => {
       </div>
     </div>
    
-    <!-- Use CopyButton Component -->
-    <CopyButton :text="lastAssistantMessage" />
-    
-  
-      
+    <!-- Flexbox container for the buttons with margin below -->
+      <div class="flex justify-center space-x-4 mb-4">
+      <!-- Use CopyButton Component -->
+        <CopyButton :text="lastAssistantMessage" />
+
+      <!-- Use ClearChat Component, only show when there are messages other than the system message -->
+        <ClearChat :hasMessages="messages.length > 1" @clearChat="clearChatFunction" />
+      </div>
+ 
+
 
 
      
