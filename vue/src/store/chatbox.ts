@@ -30,6 +30,9 @@ export const useChatboxStore = defineStore("chatbox", {
     clearNewMessage() {
       this.newMessage = "";
     },
+    clearMessages() {
+      this.userMessages = [];
+    },
   },
   getters: {
     messages: (state) => {

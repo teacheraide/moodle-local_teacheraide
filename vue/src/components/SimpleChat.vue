@@ -18,6 +18,8 @@ const fetchModels = async () => {
   }
 };
 
+const controller = new AbortController();
+
 const sendMessage = async () => {
   if (!chatbox.newMessage) return;
 
@@ -27,10 +29,13 @@ const sendMessage = async () => {
   });
 
   try {
-    const response = await client.chat.completions.create({
-      model: chatbox.selectedModel,
-      messages: chatbox.messages,
-    });
+    const response = await client.chat.completions.create(
+      {
+        model: chatbox.selectedModel,
+        messages: chatbox.messages,
+      },
+      { signal: controller.signal },
+    );
 
     chatbox.addMessage({
       content: response.choices[0].message.content,
@@ -44,6 +49,11 @@ const sendMessage = async () => {
   }
 };
 
+const clearMessages = () => {
+  controller.abort();
+  chatbox.clearMessages();
+};
+
 onMounted(async () => {
   await fetchModels();
   chatbox.setSystemPrompt(systemPrompt);
@@ -51,8 +61,11 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="max-w-lg mx-auto p-4 border border-gray-300 rounded-lg shadow-md">
+  <div data-theme="light" class="max-w-lg mx-auto p-4 border border-gray-300 rounded-lg shadow-md">
     <div class="mb-4">
+      <button @click="clearMessages" class="btn btn-error btn-sm float-right">
+        Clear Messages
+      </button>
       <h2 class="text-xl font-semibold">Chat</h2>
       <div class="mb-2">
         <label for="model-select" class="block text-gray-700">Select Model:</label>
