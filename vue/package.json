@@ -23,6 +23,7 @@
     "marked": "^14.1.1",
     "openai": "^4.56.0",
     "pinia": "^2.2.2",
+    "pinia-plugin-persistedstate": "^4.0.1",
     "vue": "^3.5.0-beta.3"
   },
   "devDependencies": {
