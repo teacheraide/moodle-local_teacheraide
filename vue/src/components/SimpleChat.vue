@@ -4,9 +4,8 @@ import { onMounted } from "vue";
 import { useChatboxStore } from "@/store/chatbox";
 import { marked } from "marked";
 
-
 const chatbox = useChatboxStore();
-const { client } = useAI();
+const { client, systemPrompt } = useAI();
 
 const fetchModels = async () => {
   try {
@@ -47,6 +46,7 @@ const sendMessage = async () => {
 
 onMounted(async () => {
   await fetchModels();
+  chatbox.setSystemPrompt(systemPrompt);
 });
 </script>
 

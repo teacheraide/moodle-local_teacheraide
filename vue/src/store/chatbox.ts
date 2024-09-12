@@ -3,14 +3,18 @@ import type { ChatCompletionCreateParamsNonStreaming } from "openai/resources/in
 
 type ChatMessage = ChatCompletionCreateParamsNonStreaming["messages"][0];
 
-export const useChatboxStore = defineStore('chatbox', {
+export const useChatboxStore = defineStore("chatbox", {
   state: () => ({
     models: [] as string[],
-    selectedModel: '',
-    messages: [{ role: 'system', content: 'Your system prompt here' }] as ChatMessage[],
-    newMessage: ''
+    selectedModel: "",
+    systemPrompt: "",
+    userMessages: [] as ChatMessage[],
+    newMessage: "",
   }),
   actions: {
+    setSystemPrompt(prompt: string) {
+      this.systemPrompt = prompt;
+    },
     setModels(models: string[]) {
       this.models = models;
     },
@@ -18,13 +22,24 @@ export const useChatboxStore = defineStore('chatbox', {
       this.selectedModel = model;
     },
     addMessage(message: ChatMessage) {
-      this.messages.push(message);
+      this.userMessages.push(message);
     },
     setNewMessage(message: string) {
       this.newMessage = message;
     },
     clearNewMessage() {
-      this.newMessage = '';
-    }
-  }
+      this.newMessage = "";
+    },
+  },
+  getters: {
+    messages: (state) => {
+      return [
+        { role: "system", content: state.systemPrompt },
+        ...state.userMessages,
+      ] satisfies ChatMessage[];
+    },
+  },
+  persist: {
+    storage: localStorage,
+  },
 });
