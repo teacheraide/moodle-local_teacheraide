@@ -1,43 +1,34 @@
+import SimpleChat from "./components/SimpleChat.vue";
 import { configureAppWithProviders } from "./provider";
 import { defineCustomElement } from "vue";
 import { OpenAI } from "openai";
-import initTinyMCE from "./tinymce/init";
+import registerTinyMCEPlugin from "./tinymce/init";
 import { webserviceBaseUrl, webserviceFetch } from "./webservice";
-// import SimpleChat from './components/SimpleChat.vue'; // Uncomment when SimpleChat is ready
 
-async function init() {
-  console.log("Main init function called");
-  try {
-    const client = new OpenAI({
-      baseURL: webserviceBaseUrl,
-      apiKey: "dummy",
-      dangerouslyAllowBrowser: true,
-      fetch: webserviceFetch,
-    });
-
-    const configureApp = configureAppWithProviders({ client });
-
-    // Initialize TinyMCE plugin
-    const tinyMCE = await initTinyMCE();
-
-    if (tinyMCE) {
-      console.log("TinyMCE plugin initialized successfully");
-    } else {
-      console.warn("TinyMCE plugin initialization returned undefined");
-    }
-
-    // Register the custom element
-    // Uncomment and adjust when SimpleChat component is ready
-    // customElements.define(
-    //   "teacheraide-simple-chat",
-    //   defineCustomElement(SimpleChat, { configureApp }),
-    // );
-
-    console.log("Main initialization completed successfully");
-  } catch (error) {
-    console.error("Initialization failed:", error);
-  }
+interface InitOptions {
+  systemPrompt: string;
 }
 
-// Export the init function as the default export
-export default { init };
+async function init({ systemPrompt }: InitOptions) {
+  // Create OpenAI client
+  const client = new OpenAI({
+    baseURL: webserviceBaseUrl,
+    apiKey: "dummy", // This is a dummy API key, as the API key is not needed for using the webservice
+    dangerouslyAllowBrowser: true,
+    fetch: webserviceFetch,
+  });
+
+  // Configure the app with providers
+  const configureApp = configureAppWithProviders({ client, systemPrompt });
+
+  // Register the TinyMCE plugin
+  await registerTinyMCEPlugin();
+
+  // Register the custom element
+  customElements.define(
+    "teacheraide-simple-chat",
+    defineCustomElement(SimpleChat, { configureApp }),
+  );
+}
+
+export { init };
