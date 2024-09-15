@@ -38,8 +38,6 @@ $PAGE->set_url(new moodle_url('/local/teacheraide/view.php'));
 
 $PAGE->navbar->add(get_string('pluginname', 'local_teacheraide'), new moodle_url('/local/teacheraide/view.php'));
 
-$PAGE->requires->js_call_amd('local_teacheraide/app-lazy', 'init');
-
 require_login();
 
 echo $OUTPUT->header();
@@ -51,5 +49,3 @@ echo $OUTPUT->render_from_template('local_teacheraide/fullpage', [
 ]);
 echo $OUTPUT->box_end();
 echo $OUTPUT->footer();
-
-echo '<div id="teacheraide-app"></div>';

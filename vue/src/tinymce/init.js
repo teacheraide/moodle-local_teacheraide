@@ -7,6 +7,11 @@ const pluginName = "local_teacheraide/tinymce";
 export default async function initTinyMCE() {
   console.log("initTinyMCE function called");
   try {
+    /**
+     * @import tinymce from "tinymce";
+     * @type {[tinymce, object]}
+     */
+
     const [tinyMCE, pluginMetadata] = await Promise.all([
       getTinyMCE(),
       getPluginMetadata(component, pluginName),
