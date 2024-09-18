@@ -26,7 +26,7 @@ class hook_callbacks
   public static function before_standard_head_html_generation(before_standard_head_html_generation $hook): void
   {
     global $PAGE;
-
+    
     // this is not secure to expose the API key to client side, but let's do it for now
     $PAGE->requires->js_call_amd('local_teacheraide/app-lazy', 'init', [[
       // "endpoint" => get_config('local_teacheraide', 'api_endpoint'),
@@ -43,10 +43,15 @@ class hook_callbacks
   public static function after_standard_main_region_html_generation(after_standard_main_region_html_generation $hook): void
   {
     // // test widget
+    
     // $hook->add_html($hook->renderer->render_from_template('local_teacheraide/test', [
     //   'msg' => "Hello World",
     // ]));
   }
 
-  public static function before_standard_top_of_body_html_generation(before_standard_top_of_body_html_generation $hook): void {}
+  public static function before_standard_top_of_body_html_generation(before_standard_top_of_body_html_generation $hook): void {
+    global $PAGE;
+    global $OUTPUT;
+    $PAGE->set_headingmenu($OUTPUT->render_from_template('local_teacheraide/chat_popover', []));
+  }
 }

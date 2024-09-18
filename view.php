@@ -27,10 +27,12 @@ use \core\context\system;
 
 global $SITE, $PAGE, $OUTPUT;
 
+
 $PAGE->set_pagetype('site-index');
 $context = system::instance();
 $PAGE->set_context($context);
 $PAGE->set_pagelayout('standard');
+
 
 $PAGE->set_title($SITE->fullname . ': ' . get_string('pluginname', 'local_teacheraide'));
 // $PAGE->set_heading($SITE->fullname);
@@ -45,6 +47,9 @@ echo $OUTPUT->header();
 
 echo $OUTPUT->box_start();
 echo $OUTPUT->render_from_template('local_teacheraide/fullpage', [
+  'msg' => "Hello World Full Page",
+]);
+echo $OUTPUT->render_from_template('local_teacheraide/chat_drawer', [
   'msg' => "Hello World Full Page",
 ]);
 echo $OUTPUT->box_end();

@@ -41,6 +41,7 @@ const sendMessage = async () => {
       content: response.choices[0].message.content,
       role: "assistant",
     });
+    
   } catch (error) {
     console.error("Failed to send message:", error);
     // Handle the error, maybe notify the user
@@ -78,7 +79,7 @@ onMounted(async () => {
         </select>
       </div>
     </div>
-    <div class="mb-4">
+    <div class="mb-4" style=" overflow:scroll; height:70%;" id="teacheraide-chat-container">
       <div v-for="(message, index) in chatbox.messages" :key="index" class="mb-2">
         <div v-if="message.role === 'system'" class="text-center">
           <p class="text-gray-500">{{ message.content }}</p>
@@ -88,7 +89,7 @@ onMounted(async () => {
             class="inline-block p-2 rounded-lg"
             :class="message.role === 'user' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-black'"
             v-html="marked.parse(message.content as string)"
-          ></div>
+           style="min-width:75px;"></div>
         </div>
       </div>
     </div>
