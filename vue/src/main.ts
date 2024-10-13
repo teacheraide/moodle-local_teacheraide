@@ -2,7 +2,6 @@ import SimpleChat from "./components/SimpleChat.vue";
 import { configureAppWithProviders } from "./provider";
 import { defineCustomElement } from "vue";
 import { OpenAI } from "openai";
-import registerTinyMCEPlugin from "./tinymce/init";
 import { webserviceBaseUrl, webserviceFetch } from "./webservice";
 
 interface InitOptions {
@@ -20,9 +19,6 @@ async function init({ systemPrompt }: InitOptions) {
 
   // Configure the app with providers
   const configureApp = configureAppWithProviders({ client, systemPrompt });
-
-  // Register the TinyMCE plugin
-  await registerTinyMCEPlugin();
 
   // Register the custom element
   customElements.define(
