@@ -1,7 +1,7 @@
 import { inject, type App } from "vue";
 import { OpenAI } from "openai";
 import { createPinia } from "pinia";
-import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
+import { PiniaSharedState } from "pinia-shared-state";
 
 const AI_CLIENT_PROVIDER = Symbol("client");
 
@@ -11,7 +11,8 @@ export const configureAppWithProviders =
   ({ client, systemPrompt }: AIClientProvider) =>
   (app: App) => {
     const pinia = createPinia();
-    pinia.use(piniaPluginPersistedstate);
+    pinia.use(PiniaSharedState({ enable: true, initialize: false, type: "localstorage" }));
+    // .use(piniaPluginPersistedstate);
 
     app.use(pinia).provide(AI_CLIENT_PROVIDER, {
       client,
