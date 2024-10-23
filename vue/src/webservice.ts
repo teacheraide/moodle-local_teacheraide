@@ -28,10 +28,14 @@ const wwwroot = M.cfg.wwwroot;
 export const webserviceBaseUrl = `${wwwroot}/webservice/restful/server.php/local_teacheraide_openai_gateway`;
 
 export const webserviceFetch: typeof fetch = async (url, init) => {
+  const endpoint = `${url}`.replace(webserviceBaseUrl, "");
+  const method = init?.method as string;
+  const body = init?.body as string;
+
   const res = await fetchThroughlocalTeacheraideOpenAIGateway({
-    endpoint: `${url}`.replace(webserviceBaseUrl, ""), // Remove the base URL from the endpoint
-    method: init?.method as string,
-    params: init?.body as string, // body is already a string
+    endpoint,
+    method,
+    params: body,
   });
 
   return new Response(res.data, {

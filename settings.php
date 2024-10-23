@@ -50,7 +50,7 @@ if ($hassiteconfig) {
             // "http://127.0.0.1:11434/v1",
             "http://host.docker.internal:11434/v1",
             PARAM_TEXT,
-            50
+            100
         ));
 
         $settingspage->add(new admin_setting_configpasswordunmask(

@@ -33,6 +33,7 @@ const sendMessage = async () => {
       {
         model: chatbox.selectedModel,
         messages: chatbox.messages,
+        max_tokens: chatbox.maxTokens,
       },
       { signal: controller.signal },
     );
@@ -67,7 +68,7 @@ onMounted(async () => {
         Clear Messages
       </button>
       <h2 class="text-xl font-semibold">Chat</h2>
-      <div class="mb-2">
+      <div class="mb-2" v-if="chatbox.models.length > 0">
         <label for="model-select" class="block text-gray-700">Select Model:</label>
         <select
           id="model-select"
