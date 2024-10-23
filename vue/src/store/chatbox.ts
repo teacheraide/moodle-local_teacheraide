@@ -41,8 +41,5 @@ export const useChatboxStore = defineStore("chatbox", {
         ...state.userMessages,
       ] satisfies ChatMessage[];
     },
-  },
-  persist: {
-    storage: localStorage,
-  },
+  }
 });
