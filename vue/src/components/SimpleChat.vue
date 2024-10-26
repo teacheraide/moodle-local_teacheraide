@@ -33,6 +33,7 @@ const sendMessage = async () => {
       {
         model: chatbox.selectedModel,
         messages: chatbox.messages,
+        max_tokens: chatbox.maxTokens,
       },
       { signal: controller.signal },
     );

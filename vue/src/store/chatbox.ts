@@ -10,6 +10,7 @@ export const useChatboxStore = defineStore("chatbox", {
     systemPrompt: "",
     userMessages: [] as ChatMessage[],
     newMessage: "",
+    maxTokens: 5000,
   }),
   actions: {
     setSystemPrompt(prompt: string) {
@@ -41,5 +42,5 @@ export const useChatboxStore = defineStore("chatbox", {
         ...state.userMessages,
       ] satisfies ChatMessage[];
     },
-  }
+  },
 });
