@@ -3,7 +3,7 @@ import { useAI } from "@/provider";
 import { onMounted } from "vue";
 import { useChatboxStore } from "@/store/chatbox";
 import { marked } from "marked";
-
+import type { ChatCompletionCreateParamsNonStreaming } from "openai/resources/index.mjs";
 const chatbox = useChatboxStore();
 const { client, systemPrompt } = useAI();
 
@@ -55,6 +55,26 @@ const clearMessages = () => {
   chatbox.clearMessages();
 };
 
+// Props are used to pass the text from the parent component
+  const props = defineProps<{ text: string }>();
+  
+  // Function to copy the provided text to the clipboard
+  const copyText = async () => {
+    try {
+      console.log(`userMessages ${typeof chatbox.userMessages}`);
+      console.log(chatbox.userMessages.length);
+      console.log(chatbox.userMessages);
+      if(chatbox.userMessages.length>0){
+        //console.log(chatbox.userMessages[0]);
+      }
+      //await navigator.clipboard.writeText(props.text);
+      //alert("Hello");
+    } catch (err) {
+      console.error("Failed to copy:", err);
+    }
+  };
+
+
 onMounted(async () => {
   await fetchModels();
   chatbox.setSystemPrompt(systemPrompt);
@@ -67,6 +87,13 @@ onMounted(async () => {
       <button @click="clearMessages" class="btn btn-error btn-sm float-right">
         Clear Messages
       </button>
+      <button
+        @click="copyText"
+        class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
+      >
+        Copy Last Response
+      </button>
+      
       <h2 class="text-xl font-semibold">Chat</h2>
       <div class="mb-2">
         <label for="model-select" class="block text-gray-700">Select Model:</label>
