@@ -9,7 +9,9 @@
     "dev:prod": "vite build --watch --emptyOutDir --mode production --minify=false --sourcemap=true",
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
-    "build-only": "vite build",
+    "build:dev": "vite build --mode development",
+    "build:prod": "vite build --mode production --minify --sourcemap",
+    "build-only": "concurrently \"npm:build:dev\" \"npm:build:prod\"",
     "type-check": "vue-tsc --build --force",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "format": "prettier --write src/"
