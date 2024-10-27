@@ -5,8 +5,8 @@ permissions:
 
 on:
   push:
-    tags:
-      - "v*.*.*"
+    branches:
+      - "main"
 
 jobs:
   build:
@@ -24,15 +24,10 @@ jobs:
           npm ci
           npm run build
 
-      - name: Release
-        uses: softprops/action-gh-release@v2
-        with:
-          files: |
-            amd/**/*
-            assets/**/*
-            classes/**/*
-            db/**/*
-            lang/**/*
-            templates/**/*
-            *.md
-            *.php
+      - name: Update changes in GitHub repository
+        run: |
+          git config --global user.name 'teacheraidebot' 
+          git config --global user.email 'teacheraidebot@teacheraidebot.com'
+          git add amd/* -f
+          git commit -m '[automated commit] add amd folder'
+          git push
