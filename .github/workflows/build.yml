@@ -9,13 +9,12 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
-        with:
-          path: plugin
 
       - uses: actions/setup-node@v4
         with:
           node-version: 22.x
 
       - run: |
+          cd vue
           npm ci
           npm run build
