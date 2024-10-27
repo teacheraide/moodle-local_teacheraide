@@ -12,7 +12,6 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - test
-      - lint
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -36,5 +35,5 @@ jobs:
           git config --global user.name ${{ github.actor }} 
           git config --global user.email ${{ github.actor }}@users.noreply.github.com
           git add amd/* -f
-          git commit -m '[automated commit] add amd folder'
+          git commit -m '[automated commit] update build'
           git push
