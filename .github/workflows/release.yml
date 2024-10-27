@@ -26,3 +26,13 @@ jobs:
 
       - name: Release
         uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            amd/**/*
+            assets/**/*
+            classes/**/*
+            db/**/*
+            lang/**/*
+            templates/**/*
+            *.md
+            *.php
