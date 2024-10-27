@@ -1,9 +1,9 @@
-name: Build
+name: Lint and Typecheck
 
 on: [pull_request]
 
 jobs:
-  build:
+  lint:
     runs-on: ubuntu-22.04
 
     steps:
@@ -13,6 +13,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22.x
+          cache: "npm"
 
       - run: |
           cd vue
