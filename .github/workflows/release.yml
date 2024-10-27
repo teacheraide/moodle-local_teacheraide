@@ -4,7 +4,8 @@ permissions:
   contents: write
 
 on:
-  - pull_request
+  pull_request:
+    branches: [main]
 
 jobs:
   build:
