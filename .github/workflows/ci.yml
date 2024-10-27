@@ -135,3 +135,34 @@ jobs:
       - name: Mark cancelled jobs as failed.
         if: ${{ cancelled() }}
         run: exit 1
+  release:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    needs:
+      - test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: "npm"
+          cache-dependency-path: "vue/package-lock.json"
+
+      - run: |
+          cd vue
+          npm ci
+          npm run build
+
+      - name: Update changes in GitHub repository
+        run: |
+          git config --global user.name ${{ github.actor }} 
+          git config --global user.email ${{ github.actor }}@users.noreply.github.com
+          git add amd/* -f
+          git commit -m '[automated commit] update build'
+          git push
