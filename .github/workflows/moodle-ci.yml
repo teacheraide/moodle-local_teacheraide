@@ -1,6 +1,9 @@
-name: Moodle Plugin CI
+name: Run Tests
 
-on: [pull_request]
+on:
+  pull_request:
+    branches:
+      - main
 
 jobs:
   test:
