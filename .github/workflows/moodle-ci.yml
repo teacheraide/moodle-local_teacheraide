@@ -44,7 +44,7 @@ jobs:
         with:
           node-version: 22.x
           cache: "npm"
-          cache-dependency-path: "vue/package-lock.json"
+          cache-dependency-path: "plugin/vue/package-lock.json"
 
       - run: |
           cd plugin/vue
