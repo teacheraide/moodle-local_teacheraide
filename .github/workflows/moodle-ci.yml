@@ -40,6 +40,16 @@ jobs:
         with:
           path: plugin
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+
+      - run: |
+          cd plugin/vue
+          npm ci
+          npm run build
+          cd ../..
+
       - name: Setup PHP ${{ matrix.php }}
         uses: shivammathur/setup-php@v2
         with:
