@@ -17,6 +17,7 @@ dist-ssr
 coverage
 *.local
 Zone.Identifier
+*Zone.Identifier
 
 /cypress/videos/
 /cypress/screenshots/
