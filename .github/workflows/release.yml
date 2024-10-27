@@ -24,7 +24,8 @@ jobs:
       - run: |
           cd vue
           npm ci
-          npm run build
+          npm run build --mode development
+          npm run build --mode production
 
       - name: Update changes in GitHub repository
         run: |
