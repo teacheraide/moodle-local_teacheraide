@@ -4,9 +4,7 @@ permissions:
   contents: write
 
 on:
-  push:
-    branches:
-      - "main"
+  - pull_request
 
 jobs:
   build:
@@ -26,8 +24,8 @@ jobs:
 
       - name: Update changes in GitHub repository
         run: |
-          git config --global user.name 'teacheraidebot' 
-          git config --global user.email 'teacheraidebot@teacheraidebot.com'
+          git config --global user.name ${{ github.actor }} 
+          git config --global user.email ${{ github.actor }}@users.noreply.github.com
           git add amd/* -f
           git commit -m '[automated commit] add amd folder'
           git push
