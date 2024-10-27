@@ -3,7 +3,7 @@ name: Build
 on: [pull_request]
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-22.04
 
     steps:
