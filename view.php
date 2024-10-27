@@ -18,12 +18,13 @@
  * Plugin version and other meta-data are defined here.
  *
  * @package     local_teacheraide
+ * @copyright   2024 teacheraide
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 require(__DIR__ . '/../../config.php');
 
-use \core\context\system;
+use core\context\system;
 
 global $SITE, $PAGE, $OUTPUT;
 
@@ -33,7 +34,6 @@ $PAGE->set_context($context);
 $PAGE->set_pagelayout('standard');
 
 $PAGE->set_title($SITE->fullname . ': ' . get_string('pluginname', 'local_teacheraide'));
-// $PAGE->set_heading($SITE->fullname);
 $PAGE->set_url(new moodle_url('/local/teacheraide/view.php'));
 
 $PAGE->navbar->add(get_string('pluginname', 'local_teacheraide'), new moodle_url('/local/teacheraide/view.php'));
@@ -41,7 +41,6 @@ $PAGE->navbar->add(get_string('pluginname', 'local_teacheraide'), new moodle_url
 require_login();
 
 echo $OUTPUT->header();
-// echo $OUTPUT->heading(get_string('test_page_heading', 'local_teacheraide'), 1);
 
 echo $OUTPUT->box_start();
 echo $OUTPUT->render_from_template('local_teacheraide/fullpage', [

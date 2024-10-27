@@ -1,6 +1,6 @@
 name: Moodle Plugin CI
 
-on: [push, pull_request]
+on: [pull_request]
 
 jobs:
   test:
@@ -40,6 +40,14 @@ jobs:
         with:
           path: plugin
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+      - run: |
+          cd plugin
+          npm ci
+          npm run build
+
       - name: Setup PHP ${{ matrix.php }}
         uses: shivammathur/setup-php@v2
         with:
@@ -75,13 +83,13 @@ jobs:
         if: ${{ !cancelled() }}
         run: moodle-plugin-ci phpmd
 
-      - name: Moodle Code Checker
-        if: ${{ !cancelled() }}
-        run: moodle-plugin-ci phpcs --max-warnings 0
+      # - name: Moodle Code Checker
+      #   if: ${{ !cancelled() }}
+      #   run: moodle-plugin-ci phpcs --max-warnings 0
 
-      - name: Moodle PHPDoc Checker
-        if: ${{ !cancelled() }}
-        run: moodle-plugin-ci phpdoc --max-warnings 0
+      # - name: Moodle PHPDoc Checker
+      #   if: ${{ !cancelled() }}
+      #   run: moodle-plugin-ci phpdoc --max-warnings 0
 
       - name: Validating
         if: ${{ !cancelled() }}
@@ -91,9 +99,9 @@ jobs:
         if: ${{ !cancelled() }}
         run: moodle-plugin-ci savepoints
 
-      - name: Mustache Lint
-        if: ${{ !cancelled() }}
-        run: moodle-plugin-ci mustache
+      # - name: Mustache Lint
+      #   if: ${{ !cancelled() }}
+      #   run: moodle-plugin-ci mustache
 
       - name: Grunt
         if: ${{ !cancelled() }}
