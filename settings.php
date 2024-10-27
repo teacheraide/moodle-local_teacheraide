@@ -19,7 +19,7 @@
  *
  * @package     local_teacheraide
  * @category    admin
- * @copyright   2024 Your Name <you@example.com>
+ * @copyright   2024 teacheraide
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -33,13 +33,13 @@ if ($hassiteconfig) {
     if ($ADMIN->fulltree) {
         // Define actual plugin settings page and add it to the tree - {@link https://docs.moodle.org/dev/Admin_settings}.
         // $settingspage->add(new admin_setting_configtext(
-        //     'local_teacheraide/api_endpoint',
-        //     get_string('api_endpoint', 'local_teacheraide'),
-        //     get_string('api_endpoint_desc', 'local_teacheraide'),
-        //     // "https://teacheraide-demo-eastus.openai.azure.com",
-        //     "http://127.0.0.1:11434",
-        //     PARAM_TEXT,
-        //     50
+        // 'local_teacheraide/api_endpoint',
+        // get_string('api_endpoint', 'local_teacheraide'),
+        // get_string('api_endpoint_desc', 'local_teacheraide'),
+        // "https://teacheraide-demo-eastus.openai.azure.com",
+        // "http://127.0.0.1:11434",
+        // PARAM_TEXT,
+        // 50
         // ));
 
         $settingspage->add(new admin_setting_configtext(
@@ -61,30 +61,30 @@ if ($hassiteconfig) {
         ));
 
         // $settingspage->add(new admin_setting_configtext(
-        //     'local_teacheraide/api_version',
-        //     get_string('api_version', 'local_teacheraide'),
-        //     get_string('api_version_desc', 'local_teacheraide'),
-        //     "2024-02-15-preview",
-        //     PARAM_TEXT,
-        //     50
+        // 'local_teacheraide/api_version',
+        // get_string('api_version', 'local_teacheraide'),
+        // get_string('api_version_desc', 'local_teacheraide'),
+        // "2024-02-15-preview",
+        // PARAM_TEXT,
+        // 50
         // ));
 
         // $settingspage->add(new admin_setting_configtext(
-        //     'local_teacheraide/api_deployment',
-        //     get_string('api_deployment', 'local_teacheraide'),
-        //     get_string('api_deployment_desc', 'local_teacheraide'),
-        //     "llama3.1",
-        //     PARAM_TEXT,
-        //     50
+        // 'local_teacheraide/api_deployment',
+        // get_string('api_deployment', 'local_teacheraide'),
+        // get_string('api_deployment_desc', 'local_teacheraide'),
+        // "llama3.1",
+        // PARAM_TEXT,
+        // 50
         // ));
 
         // $settingspage->add(new admin_setting_configtext(
-        //     'local_teacheraide/api_model',
-        //     get_string('api_model', 'local_teacheraide'),
-        //     get_string('api_model_desc', 'local_teacheraide'),
-        //     "llama3.1",
-        //     PARAM_TEXT,
-        //     50
+        // 'local_teacheraide/api_model',
+        // get_string('api_model', 'local_teacheraide'),
+        // get_string('api_model_desc', 'local_teacheraide'),
+        // "llama3.1",
+        // PARAM_TEXT,
+        // 50
         // ));
 
         $settingspage->add(new admin_setting_configtextarea(

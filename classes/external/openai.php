@@ -1,37 +1,59 @@
 <?php
+// This file is part of Moodle - https://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 namespace local_teacheraide\external;
 
 use core\dataformat\base;
-use \core_external\external_function_parameters;
-use \core_external\external_single_structure;
-use \core_external\external_value;
-use \core_external\external_api;
+use core_external\external_function_parameters;
+use core_external\external_single_structure;
+use core_external\external_value;
+use core_external\external_api;
 
-defined('MOODLE_INTERNAL') || die();
+/**
+ * Plugin strings are defined here.
+ *
+ * @package     local_teacheraide
+ * @category    string
+ * @copyright   2024 teacheraide
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
 class openai extends external_api
 {
+
   public static function gateway_parameters()
   {
     return new external_function_parameters(
-      array(
+      [
         'endpoint' => new external_value(PARAM_TEXT, 'The endpoint to call'),
         'method' => new external_value(PARAM_TEXT, 'The HTTP method to use'),
-        'params' => new external_value(PARAM_RAW, 'The parameters to pass to the endpoint', VALUE_OPTIONAL, null)
-      )
+        'params' => new external_value(PARAM_RAW, 'The parameters to pass to the endpoint', VALUE_OPTIONAL, null),
+      ]
     );
   }
 
   public static function gateway($endpoint, $method, $params = null)
   {
     // Validate parameters
-    $valid_params = self::validate_parameters(self::gateway_parameters(), array('endpoint' => $endpoint, 'method' => $method, 'params' => $params));
+    $validparams = self::validate_parameters(self::gateway_parameters(), ['endpoint' => $endpoint, 'method' => $method, 'params' => $params]);
 
     $request = [
-      "endpoint" => $valid_params['endpoint'],
-      "method" => $valid_params['method'],
-      "params" => $valid_params["params"]
+      "endpoint" => $validparams['endpoint'],
+      "method" => $validparams['method'],
+      "params" => $validparams["params"],
     ];
 
     // var_dump($request);
@@ -46,7 +68,6 @@ class openai extends external_api
     // ob_start();
     // $out = fopen('php://output', 'w');
 
-
     // Initialize cURL
     $ch = curl_init();
 
@@ -55,7 +76,6 @@ class openai extends external_api
 
     // //store output in the stream we've initalized
     // curl_setopt($ch, CURLOPT_STDERR, $out);
-
 
     curl_setopt($ch, CURLOPT_URL, $fullurl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -84,7 +104,7 @@ class openai extends external_api
     // Inject the API key from Moodle settings
     curl_setopt($ch, CURLOPT_HTTPHEADER, [
       'Authorization: Bearer ' . $apikey,
-      'Content-Type: application/json'
+      'Content-Type: application/json',
     ]);
 
     // var_dump($request['params']);
@@ -103,16 +123,16 @@ class openai extends external_api
     // var_dump($response);
 
     return [
-      'data' => $response
+      'data' => $response,
     ];
   }
 
   public static function gateway_returns()
   {
     return new external_single_structure(
-      array(
-        'data' => new external_value(PARAM_RAW, 'Data returned from the API')
-      )
+      [
+        'data' => new external_value(PARAM_RAW, 'Data returned from the API'),
+      ]
     );
   }
 }

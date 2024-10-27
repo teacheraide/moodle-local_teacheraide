@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -16,16 +17,29 @@
 
 namespace local_teacheraide;
 
-use \core\hook\output\before_footer_html_generation;
-use \core\hook\output\before_standard_top_of_body_html_generation;
-use \core\hook\output\after_standard_main_region_html_generation;
-use \core\hook\output\before_standard_head_html_generation;
-
-class chat_popover extends core\message
+/**
+ * Plugin strings are defined here.
+ *
+ * @package     local_teacheraide
+ * @category    string
+ * @copyright   2024 teacheraide
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+/**
+ * Summary of chat_popover
+ */
+class chat_popover
 {
-  
+    /**
+     *
+     */
 }
-class chat_drawer extends core\message
+/**
+ * Summary of chat_drawer
+ */
+class chat_drawer
 {
-  
+    /**
+     *
+     */
 }
