@@ -38,9 +38,11 @@ export const useChatboxStore = defineStore("chatbox", {
   getters: {
     messages: (state) => {
       return [
-        { role: "system", content: state.systemPrompt },
+        ...((state.systemPrompt
+          ? [{ role: "system", content: state.systemPrompt }]
+          : []) as ChatMessage[]),
         ...state.userMessages,
-      ] satisfies ChatMessage[];
+      ];
     },
   },
 });

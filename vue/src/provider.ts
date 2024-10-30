@@ -12,7 +12,6 @@ export const configureAppWithProviders =
   (app: App) => {
     const pinia = createPinia();
     pinia.use(PiniaSharedState({ enable: true, initialize: false, type: "localstorage" }));
-    // .use(piniaPluginPersistedstate);
 
     app.use(pinia).provide(AI_CLIENT_PROVIDER, {
       client,
