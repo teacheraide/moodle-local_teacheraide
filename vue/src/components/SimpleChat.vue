@@ -3,7 +3,6 @@ import { useAI } from "@/provider";
 import { onMounted } from "vue";
 import { useChatboxStore } from "@/store/chatbox";
 import { marked } from "marked";
-import type { ChatCompletionCreateParamsNonStreaming } from "openai/resources/index.mjs";
 const chatbox = useChatboxStore();
 const { client, systemPrompt } = useAI();
 
@@ -79,6 +78,7 @@ onMounted(async () => {
   await fetchModels();
   chatbox.setSystemPrompt(systemPrompt);
 });
+
 </script>
 
 <template>
@@ -95,7 +95,7 @@ onMounted(async () => {
       </button>
       
       <h2 class="text-xl font-semibold">Chat</h2>
-      <div class="mb-2">
+      <div class="mb-2" v-if="chatbox.models.length > 0">
         <label for="model-select" class="block text-gray-700">Select Model:</label>
         <select
           id="model-select"
