@@ -1,4 +1,4 @@
-import SimpleChat from "./components/SimpleChat.vue";
+import HomeScreen from "./components/HomeScreen.vue";
 import { configureAppWithProviders } from "./provider";
 import { defineCustomElement } from "vue";
 import { OpenAI } from "openai";
@@ -23,7 +23,7 @@ async function init({ systemPrompt }: InitOptions) {
   // Register the custom element
   customElements.define(
     "teacheraide-simple-chat",
-    defineCustomElement(SimpleChat, { configureApp }),
+    defineCustomElement(HomeScreen, { configureApp }),
   );
 }
 

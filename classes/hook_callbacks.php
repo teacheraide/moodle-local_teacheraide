@@ -65,6 +65,10 @@ class hook_callbacks
      */
     public static function before_footer_html_generation(before_footer_html_generation $hook): void
     {
+        
+        // // test widget
+        
+
     }
 
     /**
@@ -74,16 +78,7 @@ class hook_callbacks
      */
     public static function after_standard_main_region_html_generation(after_standard_main_region_html_generation $hook): void
     {
-        global $OUTPUT;
-        // // test widget
-        echo $OUTPUT->box_start();
-        echo $OUTPUT->render_from_template('local_teacheraide/chat_drawer', [
-            'msg' => "Hello World Full Page",
-        ]);
-        echo $OUTPUT->box_end();
-        // $hook->add_html($hook->renderer->render_from_template('local_teacheraide/test', [
-        // 'msg' => "Hello World",
-        // ]));
+        
     }
 
     /**
@@ -96,5 +91,11 @@ class hook_callbacks
         global $PAGE;
         global $OUTPUT;
         $PAGE->set_headingmenu($OUTPUT->render_from_template('local_teacheraide/chat_popover', []));
+        //global $OUTPUT;
+        // echo $OUTPUT->box_start();
+        // echo $OUTPUT->render_from_template('local_teacheraide/chat_drawer', [
+        //    'msg' => "Hello World Full Page",
+        // ]);
+        // echo $OUTPUT->box_end();
     }
 }
