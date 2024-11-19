@@ -59,6 +59,19 @@ const hide = () => {
 };
 
 defineExpose({ show, hide });
+
+const deleteChat = async (chatId: string) => {
+  if (confirm("Are you sure you want to delete this chat?")) {
+    const chatIndex = chatbox.chatHistory.findIndex((chat) => chat.id === chatId);
+    if (chatIndex !== -1) {
+      chatbox.chatHistory.splice(chatIndex, 1);
+      if (chatbox.currentChatId === chatId) {
+        chatbox.clearMessages();
+        chatbox.currentChatId = "";
+      }
+    }
+  }
+};
 </script>
 
 <template>
@@ -98,10 +111,20 @@ defineExpose({ show, hide });
               :class="{ active: hoveredChatId === chat.id }"
               @mouseenter="hoveredChatId = chat.id"
               @mouseleave="hoveredChatId = null"
-              @click="selectChat(chat.id)"
             >
-              <div class="chat-title">{{ chat.title }}</div>
-              <div class="chat-date">{{ formatDate(chat.timestamp) }}</div>
+              <div class="chat-item-header">
+                <img
+                  @click.stop="deleteChat(chat.id)"
+                  src="../assets/trash_icon.svg"
+                  alt="delete"
+                  class="delete-icon"
+                  title="Delete chat"
+                />
+              </div>
+              <div class="chat-item-content" @click="selectChat(chat.id)">
+                <div class="chat-title">{{ chat.title }}</div>
+                <div class="chat-date">{{ formatDate(chat.timestamp) }}</div>
+              </div>
             </div>
           </div>
         </template>
@@ -259,5 +282,38 @@ defineExpose({ show, hide });
 
 .chat-history-content::-webkit-scrollbar-thumb:hover {
   background: #c4c4c4;
+}
+
+.chat-item-header {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 1;
+}
+
+.delete-icon {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.chat-history-item {
+  position: relative;
+  background-color: #e7eef7;
+  border-radius: 8px;
+  padding: 16px;
+  padding-right: 32px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.chat-history-item:hover .delete-icon {
+  opacity: 0.6;
+}
+
+.delete-icon:hover {
+  opacity: 1 !important;
 }
 </style>
