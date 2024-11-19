@@ -65,6 +65,7 @@ const saveEdit = (event: Event, chatId: string) => {
     const chatIndex = chatbox.chatHistory.findIndex((chat) => chat.id === chatId);
     if (chatIndex !== -1) {
       chatbox.chatHistory[chatIndex].title = editTitle.value.trim();
+      chatbox.saveToStorage();
     }
   }
   editingChatId.value = null;
@@ -80,6 +81,7 @@ const deleteChat = (chatId: string) => {
         chatbox.clearMessages();
         chatbox.currentChatId = "";
       }
+      chatbox.saveToStorage();
     }
   }
 };
