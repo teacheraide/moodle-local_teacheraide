@@ -22,6 +22,8 @@ const chatbox = useChatboxStore();
 const isVisible = ref(false);
 const searchQuery = ref("");
 const hoveredChatId = ref<string | null>(null);
+const editingChatId = ref<string | null>(null);
+const editTitle = ref("");
 
 const filteredChats = computed(() => {
   if (!searchQuery.value) return chatbox.chatHistory;
@@ -45,22 +47,31 @@ const formatDate = (date: Date) => {
 };
 
 const selectChat = (chatId: string) => {
-  chatbox.loadChat(chatId);
-  hide();
+  if (editingChatId.value === null) {
+    chatbox.loadChat(chatId);
+    hide();
+  }
 };
 
-const show = () => {
-  isVisible.value = true;
+const startEdit = (event: Event, chat: ChatSession) => {
+  event.stopPropagation();
+  editingChatId.value = chat.id;
+  editTitle.value = chat.title;
 };
 
-const hide = () => {
-  isVisible.value = false;
-  hoveredChatId.value = null;
+const saveEdit = (event: Event, chatId: string) => {
+  event.stopPropagation();
+  if (editTitle.value.trim()) {
+    const chatIndex = chatbox.chatHistory.findIndex((chat) => chat.id === chatId);
+    if (chatIndex !== -1) {
+      chatbox.chatHistory[chatIndex].title = editTitle.value.trim();
+    }
+  }
+  editingChatId.value = null;
+  editTitle.value = "";
 };
 
-defineExpose({ show, hide });
-
-const deleteChat = async (chatId: string) => {
+const deleteChat = (chatId: string) => {
   if (confirm("Are you sure you want to delete this chat?")) {
     const chatIndex = chatbox.chatHistory.findIndex((chat) => chat.id === chatId);
     if (chatIndex !== -1) {
@@ -72,6 +83,28 @@ const deleteChat = async (chatId: string) => {
     }
   }
 };
+
+const handleKeyDown = (event: KeyboardEvent, chatId: string) => {
+  if (event.key === "Enter") {
+    saveEdit(event, chatId);
+  } else if (event.key === "Escape") {
+    editingChatId.value = null;
+    editTitle.value = "";
+  }
+};
+
+const show = () => {
+  isVisible.value = true;
+};
+
+const hide = () => {
+  isVisible.value = false;
+  hoveredChatId.value = null;
+  editingChatId.value = null;
+  editTitle.value = "";
+};
+
+defineExpose({ show, hide });
 </script>
 
 <template>
@@ -112,18 +145,38 @@ const deleteChat = async (chatId: string) => {
               @mouseenter="hoveredChatId = chat.id"
               @mouseleave="hoveredChatId = null"
             >
-              <div class="chat-item-header">
+              <div class="chat-item-actions">
+                <img
+                  @click.stop="startEdit($event, chat)"
+                  src="../assets/edit_icon.svg"
+                  alt="edit"
+                  class="action-icon"
+                  title="Edit title"
+                />
                 <img
                   @click.stop="deleteChat(chat.id)"
                   src="../assets/trash_icon.svg"
                   alt="delete"
-                  class="delete-icon"
+                  class="action-icon"
                   title="Delete chat"
                 />
               </div>
               <div class="chat-item-content" @click="selectChat(chat.id)">
-                <div class="chat-title">{{ chat.title }}</div>
-                <div class="chat-date">{{ formatDate(chat.timestamp) }}</div>
+                <div v-if="editingChatId === chat.id" class="chat-title-edit">
+                  <input
+                    v-model="editTitle"
+                    type="text"
+                    @click.stop
+                    @keydown="(e) => handleKeyDown(e, chat.id)"
+                    @blur="saveEdit($event, chat.id)"
+                    class="chat-title-input"
+                    ref="editInput"
+                  />
+                </div>
+                <div v-else>
+                  <div class="chat-title">{{ chat.title }}</div>
+                  <div class="chat-date">{{ formatDate(chat.timestamp) }}</div>
+                </div>
               </div>
             </div>
           </div>
@@ -235,9 +288,11 @@ const deleteChat = async (chatId: string) => {
 }
 
 .chat-history-item {
+  position: relative;
   background-color: #e7eef7;
   border-radius: 8px;
   padding: 16px;
+  padding-right: 32px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -246,9 +301,54 @@ const deleteChat = async (chatId: string) => {
   background-color: #b8cce8;
 }
 
+.chat-item-actions {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 1;
+  display: flex;
+  gap: 8px;
+}
+
+.action-icon {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.chat-history-item:hover .action-icon {
+  opacity: 0.6;
+}
+
+.action-icon:hover {
+  opacity: 1 !important;
+}
+
+.chat-title-edit {
+  margin-right: 40px;
+}
+
+.chat-title-input {
+  width: 100%;
+  padding: 4px 8px;
+  border: 1px solid #003274;
+  border-radius: 4px;
+  font-size: 14px;
+  background: white;
+  color: #003274;
+}
+
+.chat-title-input:focus {
+  outline: none;
+  border-color: #003274;
+  box-shadow: 0 0 0 2px rgba(0, 50, 116, 0.1);
+}
+
 .chat-title {
   font-size: 16px;
-  color: #003274;
+  color: #1f2937;
   font-weight: 500;
   margin-bottom: 4px;
   overflow: hidden;
@@ -258,12 +358,7 @@ const deleteChat = async (chatId: string) => {
 
 .chat-date {
   font-size: 12px;
-  color: #4a5568;
-}
-
-/* Hover effects */
-.chat-history-close:hover {
-  opacity: 0.8;
+  color: #6b7280;
 }
 
 /* Scrollbar styling */
@@ -282,38 +377,5 @@ const deleteChat = async (chatId: string) => {
 
 .chat-history-content::-webkit-scrollbar-thumb:hover {
   background: #c4c4c4;
-}
-
-.chat-item-header {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  z-index: 1;
-}
-
-.delete-icon {
-  width: 16px;
-  height: 16px;
-  cursor: pointer;
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
-
-.chat-history-item {
-  position: relative;
-  background-color: #e7eef7;
-  border-radius: 8px;
-  padding: 16px;
-  padding-right: 32px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.chat-history-item:hover .delete-icon {
-  opacity: 0.6;
-}
-
-.delete-icon:hover {
-  opacity: 1 !important;
 }
 </style>
