@@ -8,14 +8,12 @@ import HelpDialog from "./HelpDialog.vue";
 import type { ChatCompletionMessageParam } from "openai/resources/chat/completions";
 import type { ChatSession } from "@/store/chatbox";
 
-// Define props with proper types
 interface Props {
   textMessage: string;
 }
 
 const props = defineProps<Props>();
 
-// Define emits
 const emit = defineEmits<{
   (e: "back-to-home"): void;
 }>();
@@ -41,7 +39,6 @@ const controller = new AbortController();
 const sendMessage = async () => {
   if (!chatbox.newMessage) return;
 
-  // Add user message
   chatbox.addMessage({
     content: chatbox.newMessage,
     role: "user",
@@ -59,7 +56,6 @@ const sendMessage = async () => {
     });
 
     if (response.choices[0].message.content) {
-      // Add assistant's response
       chatbox.addMessage({
         content: response.choices[0].message.content,
         role: "assistant",
@@ -72,7 +68,6 @@ const sendMessage = async () => {
 
 const goHome = async (event: MouseEvent) => {
   try {
-    // No need to save current chat as it's already in history
     chatbox.clearMessages();
     chatbox.clearNewMessage();
     chatbox.currentChatId = ""; // Clear current chat ID
@@ -109,10 +104,10 @@ const copyText = async (event: MouseEvent) => {
 };
 
 const refreshText = async (event: MouseEvent) => {
+  // TODO: This function need to be refactored, it is not working as expected
   try {
     console.log("Refreshing response...");
 
-    // Find the index in the messages array directly
     const messageWrappers = document.querySelectorAll(".message-wrapper");
     const currentWrapper = (event.target as HTMLElement).closest(".message-wrapper");
 
@@ -121,7 +116,6 @@ const refreshText = async (event: MouseEvent) => {
       return;
     }
 
-    // Get the index of this wrapper
     const messageIndex = Array.from(messageWrappers).indexOf(currentWrapper);
     console.log("Message wrapper index:", messageIndex);
 
@@ -130,11 +124,9 @@ const refreshText = async (event: MouseEvent) => {
       return;
     }
 
-    // Get messages up to the user's message that prompted this response
     const messagesUpToThis = chatbox.messages.slice(0, messageIndex);
     console.log("Messages up to this:", messagesUpToThis);
 
-    // Generate new response
     const response = await client.chat.completions.create({
       model: chatbox.selectedModel,
       messages: [
@@ -154,7 +146,6 @@ const refreshText = async (event: MouseEvent) => {
       throw new Error("No response content received");
     }
 
-    // Create new message array with updated content
     const updatedMessages = chatbox.userMessages.map((msg, idx) => {
       if (idx === messageIndex) {
         return {
@@ -165,7 +156,6 @@ const refreshText = async (event: MouseEvent) => {
       return msg;
     });
 
-    // Update store
     chatbox.clearMessages();
     updatedMessages.forEach((msg) => chatbox.addMessage(msg));
   } catch (err) {
@@ -365,7 +355,7 @@ const handleClose = () => {
 .messages-container {
   flex: 1;
   overflow-y: auto;
-  padding: 16px 20px; /* Updated padding to match header */
+  padding: 16px 20px; 
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -388,8 +378,8 @@ const handleClose = () => {
 
 .assistant-message {
   background-color: #f8f9fa;
-  padding: 16px 20px; /* Updated padding to match container */
-  margin: 0 -20px; /* Updated margin to match new padding */
+  padding: 16px 20px; 
+  margin: 0 -20px; 
   position: relative;
 }
 
@@ -413,7 +403,7 @@ const handleClose = () => {
 .message-actions {
   position: absolute;
   bottom: 8px;
-  left: 20px; /* Updated to match container padding */
+  left: 20px; 
   display: flex;
   gap: 16px;
   align-items: center;
@@ -434,7 +424,7 @@ const handleClose = () => {
 }
 
 .input-wrapper {
-  padding: 0 20px; /* Updated to match container padding */
+  padding: 0 20px; 
   margin-bottom: 8px;
 }
 
@@ -470,7 +460,7 @@ const handleClose = () => {
 
 .navigation {
   background: #f8f9fa;
-  padding: 12px 20px; /* Updated to match container padding */
+  padding: 12px 20px; 
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -486,14 +476,12 @@ const handleClose = () => {
   transition: opacity 0.2s ease;
 }
 
-/* Hover effects */
 .nav-icon:hover,
 .send-icon:hover,
 .close-icon:hover {
   opacity: 0.8;
 }
 
-/* Scrollbar styling */
 .messages-container::-webkit-scrollbar {
   width: 6px;
 }
