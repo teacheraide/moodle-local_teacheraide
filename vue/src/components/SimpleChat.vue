@@ -256,21 +256,21 @@ const handleClose = () => {
               src="../assets/copy_icon.svg"
               alt="copy"
               class="action-icon"
-              title="copy"
+              title="Copy to clipboard"
             />
             <img
               @click="refreshText"
               src="../assets/refresh_icon.svg"
               alt="refresh"
               class="action-icon"
-              title="refresh"
+              title="Regenerate response"
             />
             <img
               @click="shareText"
               src="../assets/share_icon.svg"
               alt="share"
               class="action-icon"
-              title="share"
+              title="Copy to editor"
             />
           </div>
         </div>
@@ -303,21 +303,21 @@ const handleClose = () => {
           src="../assets/list_icon.svg"
           alt="chat history"
           class="nav-icon"
-          title="chat history"
+          title="Chat history"
         />
         <img
           @click="goHome"
           src="../assets/home_icon.svg"
           alt="home"
           class="nav-icon"
-          title="start new chat"
+          title="Start new chat"
         />
         <img
           @click="displayHelp"
           src="../assets/help_icon.svg"
           alt="help"
           class="nav-icon"
-          title="help"
+          title="Help"
         />
       </div>
     </div>

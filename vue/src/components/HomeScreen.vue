@@ -66,9 +66,16 @@ const backToHome = () => {
         src="../assets/list_icon.svg"
         alt="chat history"
         class="nav-icon"
+        title="Chat history"
       />
-      <img src="../assets/home_icon.svg" alt="home" class="nav-icon active" />
-      <img @click="displayHelp" src="../assets/help_icon.svg" alt="help" class="nav-icon" />
+      <img src="../assets/home_icon.svg" alt="home" class="nav-icon active" title="Home" />
+      <img
+        @click="displayHelp"
+        src="../assets/help_icon.svg"
+        alt="help"
+        class="nav-icon"
+        title="Help"
+      />
     </div>
 
     <!-- Add dialog components -->
