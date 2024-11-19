@@ -20,8 +20,11 @@ export const useChatboxStore = defineStore("chatbox", {
     userMessages: [] as Message[],
     newMessage: "",
     maxTokens: 5000,
-    chatHistory: [] as ChatSession[],
-    currentChatId: "",
+    chatHistory: JSON.parse(localStorage.getItem("chatHistory") || "[]").map((chat: any) => ({
+      ...chat,
+      timestamp: new Date(chat.timestamp),
+    })) as ChatSession[],
+    currentChatId: localStorage.getItem("currentChatId") || "",
   }),
 
   actions: {
@@ -39,12 +42,12 @@ export const useChatboxStore = defineStore("chatbox", {
 
     setUserMessages(messages: Message[]) {
       this.userMessages = [...messages];
+      this.saveToStorage();
     },
 
     addMessage(message: Message) {
       this.userMessages.push(message);
 
-      // If no current chat ID and this is a user message, create a new chat
       if (!this.currentChatId && message.role === "user") {
         const id = crypto.randomUUID();
         this.currentChatId = id;
@@ -54,12 +57,9 @@ export const useChatboxStore = defineStore("chatbox", {
           timestamp: new Date(),
           messages: [message],
         });
-      }
-      // If we have a current chat ID, just update the existing chat
-      else if (this.currentChatId) {
+      } else if (this.currentChatId) {
         const chatIndex = this.chatHistory.findIndex((chat) => chat.id === this.currentChatId);
         if (chatIndex !== -1) {
-          // Update the existing chat's messages and timestamp
           this.chatHistory[chatIndex] = {
             ...this.chatHistory[chatIndex],
             messages: [...this.userMessages],
@@ -67,19 +67,18 @@ export const useChatboxStore = defineStore("chatbox", {
           };
         }
       }
+      this.saveToStorage();
     },
 
-    setNewMessage(message: string) {
-      this.newMessage = message;
-    },
-
-    clearNewMessage() {
-      this.newMessage = "";
+    saveToStorage() {
+      localStorage.setItem("chatHistory", JSON.stringify(this.chatHistory));
+      localStorage.setItem("currentChatId", this.currentChatId);
     },
 
     clearMessages() {
       this.userMessages = [];
       this.currentChatId = "";
+      this.saveToStorage();
     },
 
     loadChat(chatId: string) {
@@ -87,12 +86,17 @@ export const useChatboxStore = defineStore("chatbox", {
       if (chat) {
         this.currentChatId = chatId;
         this.userMessages = [...chat.messages];
+        this.saveToStorage();
       }
     },
 
     startNewChat() {
       this.clearMessages();
       this.clearNewMessage();
+    },
+
+    clearNewMessage() {
+      this.newMessage = "";
     },
   },
 
