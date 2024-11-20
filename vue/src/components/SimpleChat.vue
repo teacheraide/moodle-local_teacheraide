@@ -5,15 +5,15 @@ import { useChatboxStore } from "@/store/chatbox";
 import { marked } from "marked";
 import ChatHistory from "./ChatHistory.vue";
 import HelpDialog from "./HelpDialog.vue";
+import type { ChatCompletionMessageParam } from "openai/resources/chat/completions";
+import type { ChatSession } from "@/store/chatbox";
 
-// Define props with proper types
 interface Props {
   textMessage: string;
 }
 
 const props = defineProps<Props>();
 
-// Define emits
 const emit = defineEmits<{
   (e: "back-to-home"): void;
 }>();
@@ -31,7 +31,6 @@ const fetchModels = async () => {
     chatbox.setSelectedModel(chatbox.models[0]);
   } catch (error) {
     console.error("Failed to fetch models:", error);
-    // Handle the error, maybe notify the user
   }
 };
 
@@ -47,92 +46,130 @@ const sendMessage = async () => {
     role: "user",
   });
 
-  // Clear input right after sending
   chatbox.clearNewMessage();
 
   try {
-    // Get AI response
-    const response = await client.chat.completions.create(
-      {
-        model: chatbox.selectedModel,
-        messages: chatbox.messages,
-        max_tokens: chatbox.maxTokens,
-      },
-      { signal: controller.signal },
-    );
+    const messages: ChatCompletionMessageParam[] = chatbox.messages;
 
-    // Add AI response when received
-    chatbox.addMessage({
-      content: response.choices[0].message.content,
-      role: "assistant",
+    const response = await client.chat.completions.create({
+      model: chatbox.selectedModel,
+      messages,
+      max_tokens: chatbox.maxTokens,
     });
+
+    if (response.choices[0].message.content) {
+      chatbox.addMessage({
+        content: response.choices[0].message.content,
+        role: "assistant",
+      });
+    }
   } catch (error) {
     console.error("Failed to send message:", error);
   }
 };
 
-const clearMessages = () => {
-  controller.abort();
-  chatbox.clearMessages();
+const goHome = async (event: MouseEvent) => {
+  try {
+    chatbox.clearMessages();
+    chatbox.clearNewMessage();
+    chatbox.currentChatId = ""; // Clear current chat ID
+    emit("back-to-home");
+  } catch (err) {
+    console.error("Failed to return to home:", err);
+  }
 };
 
-// Function to copy the provided text to the clipboard
+const onLoadChat = (chat: ChatSession) => {
+  chatbox.currentChatId = chat.id;
+  chatbox.setUserMessages(chat.messages);
+  chatbox.clearNewMessage();
+};
+
 const copyText = async (event: MouseEvent) => {
   try {
-    // Find the closest parent element containing the <p> tag
-    const paragraphContent = (event.target as HTMLElement)
-      .closest(".inline-block.p-2.rounded-lg")
-      ?.querySelector("p")?.textContent;
+    const messageElement = (event.target as HTMLElement)
+      .closest(".assistant-message")
+      ?.querySelector(".message-content");
 
-    if (paragraphContent) {
-      // Copy text to clipboard
-      await navigator.clipboard.writeText(paragraphContent);
-      alert(`copied ${paragraphContent} to clipboard!`);
+    if (messageElement) {
+      const textContent = messageElement.textContent || "";
+
+      await navigator.clipboard.writeText(textContent);
+      alert("Message copied to clipboard!");
     } else {
-      console.warn("No text found in <p> tag");
+      console.warn("Message content not found");
     }
   } catch (err) {
     console.error("Failed to copy:", err);
+    alert("Failed to copy message. Please try again.");
   }
 };
 
 const refreshText = async (event: MouseEvent) => {
+  // TODO: This function need to be refactored, it is not working as expected
   try {
-    // Find the closest parent element containing the <p> tag
-    const paragraphContent = (event.target as HTMLElement)
-      .closest(".inline-block.p-2.rounded-lg")
-      ?.querySelector("p")?.textContent;
+    console.log("Refreshing response...");
 
-    if (paragraphContent) {
-      // Copy text to clipboard
-      await navigator.clipboard.writeText(paragraphContent);
-      alert(`copied ${paragraphContent} to clipboard!`);
-    } else {
-      console.warn("No text found in <p> tag");
+    const messageWrappers = document.querySelectorAll(".message-wrapper");
+    const currentWrapper = (event.target as HTMLElement).closest(".message-wrapper");
+
+    if (!currentWrapper) {
+      console.warn("Could not find message wrapper");
+      return;
     }
+
+    const messageIndex = Array.from(messageWrappers).indexOf(currentWrapper);
+    console.log("Message wrapper index:", messageIndex);
+
+    if (messageIndex === -1) {
+      console.warn("Could not find message index");
+      return;
+    }
+
+    const messagesUpToThis = chatbox.messages.slice(0, messageIndex);
+    console.log("Messages up to this:", messagesUpToThis);
+
+    const response = await client.chat.completions.create({
+      model: chatbox.selectedModel,
+      messages: [
+        ...(chatbox.systemPrompt
+          ? [{ role: "system" as const, content: chatbox.systemPrompt }]
+          : []),
+        ...messagesUpToThis,
+      ],
+      max_tokens: chatbox.maxTokens,
+      temperature: 1.0,
+      presence_penalty: 0.6,
+      frequency_penalty: 0.6,
+      top_p: 0.9,
+    });
+
+    if (!response.choices[0].message.content) {
+      throw new Error("No response content received");
+    }
+
+    const updatedMessages = chatbox.userMessages.map((msg, idx) => {
+      if (idx === messageIndex) {
+        return {
+          content: response.choices[0].message.content!,
+          role: "assistant" as const,
+        };
+      }
+      return msg;
+    });
+
+    chatbox.clearMessages();
+    updatedMessages.forEach((msg) => chatbox.addMessage(msg));
   } catch (err) {
-    console.error("Failed to copy:", err);
+    console.error("Failed to refresh response:", err);
+    alert("Failed to generate new response. Please try again.");
   }
 };
 
 const shareText = async (event: MouseEvent) => {
-  try {
-    // Find the closest parent element containing the <p> tag
-    const paragraphContent = (event.target as HTMLElement)
-      .closest(".inline-block.p-2.rounded-lg")
-      ?.querySelector("p")?.textContent;
-
-    if (paragraphContent) {
-      // Copy text to clipboard
-      await navigator.clipboard.writeText(paragraphContent);
-      alert(`copied ${paragraphContent} to clipboard!`);
-    } else {
-      console.warn("No text found in <p> tag");
-    }
-  } catch (err) {
-    console.error("Failed to copy:", err);
-  }
+  // TODO: share text directly to the tinyMCE editor
 };
+
 const displayChatHistory = async (event: MouseEvent) => {
   try {
     if (!chatHistoryRef.value) {
@@ -144,14 +181,6 @@ const displayChatHistory = async (event: MouseEvent) => {
   } catch (err) {
     console.error("Failed to display chat history:", err);
     alert("Failed to open chat history. Please try again.");
-  }
-};
-const goHome = async (event: MouseEvent) => {
-  try {
-    console.log("Home navigation to be implemented");
-    alert("Home navigation coming soon!");
-  } catch (err) {
-    console.error("Failed to navigate home:", err);
   }
 };
 
@@ -169,7 +198,6 @@ const displayHelp = async (event: MouseEvent) => {
   }
 };
 
-// Use the textMessage prop when initializing the chat
 onMounted(() => {
   if (props.textMessage) {
     chatbox.newMessage = props.textMessage;
@@ -178,7 +206,11 @@ onMounted(() => {
 });
 
 const handleClose = () => {
-  emit("back-to-home");
+  console.log(`close window`);
+  let chatwindow = document.getElementById("chat-screen");
+  if (chatwindow) {
+    chatwindow.style.display = "none";
+  }
 };
 </script>
 
@@ -200,7 +232,7 @@ const handleClose = () => {
         <p>You are a helpful assistant that aids teachers.</p>
       </div>
 
-      <div v-else v-for="(message, index) in chatbox.messages" :key="index" class="message-wrapper">
+      <div v-for="(message, index) in chatbox.messages" :key="index" class="message-wrapper">
         <div v-if="message.role === 'user'" class="user-message">
           <div class="message-content">
             {{ message.content }}
@@ -210,27 +242,27 @@ const handleClose = () => {
         <div v-if="message.role === 'assistant'" class="assistant-message">
           <div class="assistant-label">TeacherAIde:</div>
           <div class="message-content" v-html="marked.parse(message.content as string)"></div>
-          <div class="message-actions">
+          <div class="message-actions" @click.stop>
             <img
               @click="copyText"
               src="../assets/copy_icon.svg"
               alt="copy"
               class="action-icon"
-              title="copy"
+              title="Copy to clipboard"
             />
             <img
               @click="refreshText"
               src="../assets/refresh_icon.svg"
               alt="refresh"
               class="action-icon"
-              title="refresh"
+              title="Regenerate response"
             />
             <img
               @click="shareText"
               src="../assets/share_icon.svg"
               alt="share"
               class="action-icon"
-              title="share"
+              title="Copy to editor"
             />
           </div>
         </div>
@@ -263,26 +295,26 @@ const handleClose = () => {
           src="../assets/list_icon.svg"
           alt="chat history"
           class="nav-icon"
-          title="chat history"
+          title="Chat history"
         />
         <img
           @click="goHome"
           src="../assets/home_icon.svg"
           alt="home"
           class="nav-icon"
-          title="home"
+          title="Start new chat"
         />
         <img
           @click="displayHelp"
           src="../assets/help_icon.svg"
           alt="help"
           class="nav-icon"
-          title="help"
+          title="Help"
         />
       </div>
     </div>
 
-    <ChatHistory ref="chatHistoryRef" />
+    <ChatHistory ref="chatHistoryRef" @load-chat="onLoadChat" />
     <HelpDialog ref="helpDialogRef" />
   </div>
 </template>
@@ -325,7 +357,7 @@ const handleClose = () => {
 .messages-container {
   flex: 1;
   overflow-y: auto;
-  padding: 16px 32px;
+  padding: 16px 20px;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -346,11 +378,10 @@ const handleClose = () => {
   font-weight: 800;
 }
 
-/* Assistant message styling */
 .assistant-message {
   background-color: #f8f9fa;
-  padding: 16px 32px;
-  margin: 0 -32px;
+  padding: 16px 20px;
+  margin: 0 -20px;
   position: relative;
 }
 
@@ -366,34 +397,15 @@ const handleClose = () => {
   margin-bottom: 24px;
 }
 
-/* Message content with reduced paragraph spacing */
 .message-content {
   line-height: 1.4;
   white-space: pre-wrap;
 }
 
-.message-content :deep(p) {
-  margin: 8px 0; /* Reduced spacing between paragraphs */
-}
-
-.message-content :deep(p:first-child) {
-  margin-top: 0;
-}
-
-.message-content :deep(ul) {
-  margin: 4px 0;
-  padding-left: 16px;
-}
-
-.message-content :deep(li) {
-  margin: 2px 0;
-}
-
-/* Action icons with black color */
 .message-actions {
   position: absolute;
   bottom: 8px;
-  left: 32px;
+  left: 20px;
   display: flex;
   gap: 16px;
   align-items: center;
@@ -403,21 +415,10 @@ const handleClose = () => {
   width: 16px;
   height: 16px;
   cursor: pointer;
-  filter: brightness(0); /* Makes icons black */
+  filter: brightness(0);
   opacity: 0.8;
   transition: opacity 0.2s ease;
   padding: 2px;
-}
-
-.action-icon:hover {
-  opacity: 1;
-}
-
-/* Bottom section styles */
-.empty-state {
-  text-align: center;
-  color: #666;
-  padding: 16px;
 }
 
 .bottom-container {
@@ -425,7 +426,7 @@ const handleClose = () => {
 }
 
 .input-wrapper {
-  padding: 0 16px;
+  padding: 0 20px;
   margin-bottom: 8px;
 }
 
@@ -477,14 +478,12 @@ const handleClose = () => {
   transition: opacity 0.2s ease;
 }
 
-/* Hover effects */
 .nav-icon:hover,
 .send-icon:hover,
 .close-icon:hover {
   opacity: 0.8;
 }
 
-/* Scrollbar styling */
 .messages-container::-webkit-scrollbar {
   width: 6px;
 }

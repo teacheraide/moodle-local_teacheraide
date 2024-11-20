@@ -61,25 +61,23 @@ const backToHome = () => {
     </div>
 
     <div class="navigation">
-      <img 
-        @click="displayChatHistory" 
-        src="../assets/list_icon.svg" 
-        alt="chat history" 
-        class="nav-icon" 
+      <img
+        @click="displayChatHistory"
+        src="../assets/list_icon.svg"
+        alt="chat history"
+        class="nav-icon"
+        title="Chat history"
       />
-      <img 
-        src="../assets/home_icon.svg" 
-        alt="home" 
-        class="nav-icon active" 
-      />
-      <img 
+      <img src="../assets/home_icon.svg" alt="home" class="nav-icon active" title="Home" />
+      <img
         @click="displayHelp"
-        src="../assets/help_icon.svg" 
-        alt="help" 
-        class="nav-icon" 
+        src="../assets/help_icon.svg"
+        alt="help"
+        class="nav-icon"
+        title="Help"
       />
     </div>
-    
+
     <!-- Add dialog components -->
     <ChatHistory ref="chatHistoryRef" />
     <HelpDialog ref="helpDialogRef" />
@@ -99,8 +97,8 @@ const backToHome = () => {
   display: flex;
   flex-direction: column;
   position: relative;
-  border: 1px solid #e5e7eb;  
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); 
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .close-icon {
@@ -135,14 +133,14 @@ const backToHome = () => {
 
 .input-container {
   margin-top: 24px;
-  width: 100%;
+  width: calc(100% - 40px);
   max-width: 400px;
   position: relative;
 }
 
 .ask-input {
-  width: 100%;
-  padding: 12px 40px 12px 16px;
+  width: calc(100% - 40px);
+  padding: 12px 20px 12px 20px;
   border-radius: 25px;
   border: none;
   background-color: #003274;

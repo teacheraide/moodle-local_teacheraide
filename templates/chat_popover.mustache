@@ -58,8 +58,19 @@ function($,MessageDrawer) {
     //console.log("Hello world I am so cool");
      // Example: Toggle action for chat drawer
     $('#chat-drawer-toggle-{{uniqid}}').on('click', function(e) {
-        $("#chat-screen").toggle();
-        console.log("Chat drawer toggle clicked");
+        
+        if ($('#chat-screen').length) {
+            $("#chat-screen").toggle();
+            console.log('yes')
+        }
+        else{
+            console.log('not so yes')
+            $('#page').append(`<div id="chat-screen" class="position-fixed" style="height:100%; top:61px; right:0; z-index:100000; display:block;">
+                    <teacheraide-simple-chat style="height:80%;"></teacheraide-simple-chat>
+                </div>
+            `);
+        }
+        
         
     });
     });

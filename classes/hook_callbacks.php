@@ -97,5 +97,11 @@ class hook_callbacks
         global $PAGE;
         global $OUTPUT;
         $PAGE->set_headingmenu($OUTPUT->render_from_template('local_teacheraide/chat_popover', []));
+        //global $OUTPUT;
+        // echo $OUTPUT->box_start();
+        // echo $OUTPUT->render_from_template('local_teacheraide/chat_drawer', [
+        //    'msg' => "Hello World Full Page",
+        // ]);
+        // echo $OUTPUT->box_end();
     }
 }
