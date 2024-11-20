@@ -39,8 +39,10 @@ const controller = new AbortController();
 const sendMessage = async () => {
   if (!chatbox.newMessage) return;
 
+  // Add user message immediately
+  const userMessage = chatbox.newMessage;
   chatbox.addMessage({
-    content: chatbox.newMessage,
+    content: userMessage,
     role: "user",
   });
 
@@ -355,7 +357,7 @@ const handleClose = () => {
 .messages-container {
   flex: 1;
   overflow-y: auto;
-  padding: 16px 20px; 
+  padding: 16px 20px;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -378,8 +380,8 @@ const handleClose = () => {
 
 .assistant-message {
   background-color: #f8f9fa;
-  padding: 16px 20px; 
-  margin: 0 -20px; 
+  padding: 16px 20px;
+  margin: 0 -20px;
   position: relative;
 }
 
@@ -403,7 +405,7 @@ const handleClose = () => {
 .message-actions {
   position: absolute;
   bottom: 8px;
-  left: 20px; 
+  left: 20px;
   display: flex;
   gap: 16px;
   align-items: center;
@@ -424,7 +426,7 @@ const handleClose = () => {
 }
 
 .input-wrapper {
-  padding: 0 20px; 
+  padding: 0 20px;
   margin-bottom: 8px;
 }
 
@@ -460,7 +462,7 @@ const handleClose = () => {
 
 .navigation {
   background: #f8f9fa;
-  padding: 12px 20px; 
+  padding: 12px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
