@@ -168,6 +168,47 @@ const refreshText = async (event: MouseEvent) => {
 
 const shareText = async (event: MouseEvent) => {
   // TODO: share text directly to the tinyMCE editor
+   try {
+    
+    
+    const parentChatWindow = document.getElementById("teacheraide-modal-chatbox");
+    console.log("parentChatWindow",parentChatWindow);
+    
+    if(parentChatWindow && parentChatWindow!= undefined){
+
+      const iframeTarget = parentChatWindow.getAttribute('data-iframe-target')||'';
+      console.log("target iframe ID",iframeTarget);
+
+      const iframe = document.getElementById(iframeTarget) as HTMLIFrameElement;
+      if(iframe && iframe!= undefined && iframe != null){
+
+        const iframeDoc = iframe.contentDocument;
+        if(iframeDoc && iframeDoc!= undefined && iframeDoc != null){
+
+          const iframeBody = iframeDoc.body;
+          console.log("iframe body",iframeBody)
+          if(iframeBody && iframeBody!= undefined && iframeBody != null){
+            const messageElement = (event.target as HTMLElement).closest(".assistant-message")?.querySelector(".message-content");
+
+            if (messageElement) {
+              const textContent = messageElement.textContent || "";
+
+              await navigator.clipboard.writeText(textContent);
+              const newElement = document.createElement('p');
+              newElement.innerText = textContent;
+              iframeBody.appendChild(newElement)
+            } else {
+              console.warn("Message content not found");
+            }
+          }
+        }
+        
+      }
+      
+    }
+  } catch (err) {
+    console.error("Failed to copy:", err);
+  }
 };
 
 const displayChatHistory = async (event: MouseEvent) => {
