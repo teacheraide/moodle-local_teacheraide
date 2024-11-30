@@ -167,16 +167,18 @@ const refreshText = async (event: MouseEvent) => {
 };
 
 const shareText = async (event: MouseEvent) => {
-  // TODO: share text directly to the tinyMCE editor
    try {
+      if (event.target && event.target instanceof HTMLElement) {
+        const parentChatWindow = event.target.closest(".teacheraide-simple-chat");
+        
+      
     
-    
-    const parentChatWindow = document.getElementById("teacheraide-modal-chatbox");
+    //const parentChatWindow = document.getElementById("teacheraide-modal-chatbox");
     console.log("parentChatWindow",parentChatWindow);
     
-    if(parentChatWindow && parentChatWindow!= undefined){
+    if(parentChatWindow && parentChatWindow!= undefined ){
 
-      const iframeTarget = parentChatWindow.getAttribute('data-iframe-target')||'';
+      const iframeTarget = parentChatWindow.getAttribute('data-iframe-target')||parentChatWindow.getAttribute('dataiframetarget')||'';
       console.log("target iframe ID",iframeTarget);
 
       const iframe = document.getElementById(iframeTarget) as HTMLIFrameElement;
@@ -206,6 +208,7 @@ const shareText = async (event: MouseEvent) => {
       }
       
     }
+      }
   } catch (err) {
     console.error("Failed to copy:", err);
   }
