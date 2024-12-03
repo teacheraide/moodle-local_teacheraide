@@ -105,106 +105,40 @@ const copyText = async (event: MouseEvent) => {
   }
 };
 
-const refreshText = async (event: MouseEvent) => {
-  // TODO: This function need to be refactored, it is not working as expected
-  try {
-    console.log("Refreshing response...");
-
-    const messageWrappers = document.querySelectorAll(".message-wrapper");
-    const currentWrapper = (event.target as HTMLElement).closest(".message-wrapper");
-
-    if (!currentWrapper) {
-      console.warn("Could not find message wrapper");
-      return;
-    }
-
-    const messageIndex = Array.from(messageWrappers).indexOf(currentWrapper);
-    console.log("Message wrapper index:", messageIndex);
-
-    if (messageIndex === -1) {
-      console.warn("Could not find message index");
-      return;
-    }
-
-    const messagesUpToThis = chatbox.messages.slice(0, messageIndex);
-    console.log("Messages up to this:", messagesUpToThis);
-
-    const response = await client.chat.completions.create({
-      model: chatbox.selectedModel,
-      messages: [
-        ...(chatbox.systemPrompt
-          ? [{ role: "system" as const, content: chatbox.systemPrompt }]
-          : []),
-        ...messagesUpToThis,
-      ],
-      max_tokens: chatbox.maxTokens,
-      temperature: 1.0,
-      presence_penalty: 0.6,
-      frequency_penalty: 0.6,
-      top_p: 0.9,
-    });
-
-    if (!response.choices[0].message.content) {
-      throw new Error("No response content received");
-    }
-
-    const updatedMessages = chatbox.userMessages.map((msg, idx) => {
-      if (idx === messageIndex) {
-        return {
-          content: response.choices[0].message.content!,
-          role: "assistant" as const,
-        };
-      }
-      return msg;
-    });
-
-    chatbox.clearMessages();
-    updatedMessages.forEach((msg) => chatbox.addMessage(msg));
-  } catch (err) {
-    console.error("Failed to refresh response:", err);
-    alert("Failed to generate new response. Please try again.");
-  }
-};
-
 const shareText = async (event: MouseEvent) => {
   // TODO: share text directly to the tinyMCE editor
-   try {
-    
-    
+  try {
     const parentChatWindow = document.getElementById("teacheraide-modal-chatbox");
-    console.log("parentChatWindow",parentChatWindow);
-    
-    if(parentChatWindow && parentChatWindow!= undefined){
+    console.log("parentChatWindow", parentChatWindow);
 
-      const iframeTarget = parentChatWindow.getAttribute('data-iframe-target')||'';
-      console.log("target iframe ID",iframeTarget);
+    if (parentChatWindow && parentChatWindow != undefined) {
+      const iframeTarget = parentChatWindow.getAttribute("data-iframe-target") || "";
+      console.log("target iframe ID", iframeTarget);
 
       const iframe = document.getElementById(iframeTarget) as HTMLIFrameElement;
-      if(iframe && iframe!= undefined && iframe != null){
-
+      if (iframe && iframe != undefined && iframe != null) {
         const iframeDoc = iframe.contentDocument;
-        if(iframeDoc && iframeDoc!= undefined && iframeDoc != null){
-
+        if (iframeDoc && iframeDoc != undefined && iframeDoc != null) {
           const iframeBody = iframeDoc.body;
-          console.log("iframe body",iframeBody)
-          if(iframeBody && iframeBody!= undefined && iframeBody != null){
-            const messageElement = (event.target as HTMLElement).closest(".assistant-message")?.querySelector(".message-content");
+          console.log("iframe body", iframeBody);
+          if (iframeBody && iframeBody != undefined && iframeBody != null) {
+            const messageElement = (event.target as HTMLElement)
+              .closest(".assistant-message")
+              ?.querySelector(".message-content");
 
             if (messageElement) {
               const textContent = messageElement.textContent || "";
 
               await navigator.clipboard.writeText(textContent);
-              const newElement = document.createElement('p');
+              const newElement = document.createElement("p");
               newElement.innerText = textContent;
-              iframeBody.appendChild(newElement)
+              iframeBody.appendChild(newElement);
             } else {
               console.warn("Message content not found");
             }
           }
         }
-        
       }
-      
     }
   } catch (err) {
     console.error("Failed to copy:", err);
@@ -290,13 +224,6 @@ const handleClose = () => {
               alt="copy"
               class="action-icon"
               title="Copy to clipboard"
-            />
-            <img
-              @click="refreshText"
-              src="../assets/refresh_icon.svg"
-              alt="refresh"
-              class="action-icon"
-              title="Regenerate response"
             />
             <img
               @click="shareText"
