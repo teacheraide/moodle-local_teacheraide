@@ -5,10 +5,10 @@ import { PiniaSharedState } from "pinia-shared-state";
 
 const AI_CLIENT_PROVIDER = Symbol("client");
 
-type AIClientProvider = { client: OpenAI; systemPrompt: string };
+type AIClientProvider = { client: OpenAI; systemPrompt: string; maxTokens: number };
 
 export const configureAppWithProviders =
-  ({ client, systemPrompt }: AIClientProvider) =>
+  ({ client, systemPrompt, maxTokens }: AIClientProvider) =>
   (app: App) => {
     const pinia = createPinia();
     pinia.use(PiniaSharedState({ enable: true, initialize: false, type: "localstorage" }));
@@ -16,6 +16,7 @@ export const configureAppWithProviders =
     app.use(pinia).provide(AI_CLIENT_PROVIDER, {
       client,
       systemPrompt,
+      maxTokens,
     });
   };
 

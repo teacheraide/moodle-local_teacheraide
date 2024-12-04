@@ -54,6 +54,7 @@ class hook_callbacks
                 // "model" => get_config('local_teacheraide', 'api_model'),
                 // "baseURL" => get_config('local_teacheraide', 'api_base_url'),
                 "systemPrompt" => get_config('local_teacheraide', 'system_prompt'),
+                "maxTokens" => get_config('local_teacheraide', 'max_tokens'),
             ]
         ]);
     }

@@ -44,4 +44,5 @@ $string["system_prompt"] = "System Prompt";
 $string["system_prompt_desc"] = "Enter your System Prompt here to tell how your assistant should behave.";
 $string["test_page_heading"] = "TeacherAIde Test Page";
 $string["test_page_title"] = "TeacherAIde Test Page";
-
+$string["max_tokens"] = "Max Tokens";
+$string["max_tokens_desc"] = "Enter Max Tokens here.";
