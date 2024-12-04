@@ -19,7 +19,7 @@ export const useChatboxStore = defineStore("chatbox", {
     systemPrompt: "",
     userMessages: [] as Message[],
     newMessage: "",
-    maxTokens: 5000,
+    maxTokens: 4096,
     chatHistory: JSON.parse(localStorage.getItem("chatHistory") || "[]").map((chat: any) => ({
       ...chat,
       timestamp: new Date(chat.timestamp),
@@ -28,6 +28,12 @@ export const useChatboxStore = defineStore("chatbox", {
   }),
 
   actions: {
+    setMaxTokens(maxTokens: number) {
+      if (maxTokens > 0) {
+        this.maxTokens = maxTokens;
+      }
+    },
+
     setSystemPrompt(prompt: string) {
       this.systemPrompt = prompt;
     },

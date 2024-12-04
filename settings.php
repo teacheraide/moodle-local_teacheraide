@@ -60,6 +60,15 @@ if ($hassiteconfig) {
             "YOUR_API_KEY",
         ));
 
+        $settingspage->add(new admin_setting_configtext(
+            'local_teacheraide/max_token',
+            get_string('max_tokens', 'local_teacheraide'),
+            get_string('max_tokens_desc', 'local_teacheraide'),
+            4096,
+            paramtype: PARAM_INT,
+        ));
+
+
         // $settingspage->add(new admin_setting_configtext(
         // 'local_teacheraide/api_version',
         // get_string('api_version', 'local_teacheraide'),

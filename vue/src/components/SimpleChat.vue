@@ -19,7 +19,7 @@ const emit = defineEmits<{
 }>();
 
 const chatbox = useChatboxStore();
-const { client, systemPrompt } = useAI();
+const { client, systemPrompt, maxTokens } = useAI();
 
 const chatHistoryRef = ref<InstanceType<typeof ChatHistory> | null>(null);
 const helpDialogRef = ref<InstanceType<typeof HelpDialog> | null>(null);
@@ -51,11 +51,13 @@ const sendMessage = async () => {
   try {
     const messages: ChatCompletionMessageParam[] = chatbox.messages;
 
-    const response = await client.chat.completions.create({
+    const payload = {
       model: chatbox.selectedModel,
       messages,
       max_tokens: chatbox.maxTokens,
-    });
+    }
+
+    const response = await client.chat.completions.create(payload);
 
     if (response.choices[0].message.content) {
       chatbox.addMessage({
@@ -182,6 +184,8 @@ const displayHelp = async (event: MouseEvent) => {
 };
 
 onMounted(() => {
+  chatbox.setSystemPrompt(systemPrompt);
+  chatbox.setMaxTokens(maxTokens);
   if (props.textMessage) {
     chatbox.newMessage = props.textMessage;
     sendMessage();

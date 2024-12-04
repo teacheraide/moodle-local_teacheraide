@@ -6,9 +6,11 @@ import { webserviceBaseUrl, webserviceFetch } from "./webservice";
 
 interface InitOptions {
   systemPrompt: string;
+  maxTokens: number;
 }
 
-async function init({ systemPrompt }: InitOptions) {
+async function init(options: InitOptions) {
+  const { systemPrompt, maxTokens } = options;
   // Create OpenAI client
   const client = new OpenAI({
     baseURL: webserviceBaseUrl,
@@ -18,7 +20,7 @@ async function init({ systemPrompt }: InitOptions) {
   });
 
   // Configure the app with providers
-  const configureApp = configureAppWithProviders({ client, systemPrompt });
+  const configureApp = configureAppWithProviders({ client, systemPrompt, maxTokens });
 
   // Register the custom element
   customElements.define(
