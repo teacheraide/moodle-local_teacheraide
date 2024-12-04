@@ -106,40 +106,48 @@ const copyText = async (event: MouseEvent) => {
 };
 
 const shareText = async (event: MouseEvent) => {
-  // TODO: share text directly to the tinyMCE editor
-  try {
-    const parentChatWindow = document.getElementById("teacheraide-modal-chatbox");
-    console.log("parentChatWindow", parentChatWindow);
+   try {
+      if (event.target && event.target instanceof HTMLElement) {
+        const parentChatWindow = event.target.closest(".teacheraide-simple-chat");
+        
+      
+    
+    //const parentChatWindow = document.getElementById("teacheraide-modal-chatbox");
+    console.log("parentChatWindow",parentChatWindow);
+    
+    if(parentChatWindow && parentChatWindow!= undefined ){
 
-    if (parentChatWindow && parentChatWindow != undefined) {
-      const iframeTarget = parentChatWindow.getAttribute("data-iframe-target") || "";
-      console.log("target iframe ID", iframeTarget);
+      const iframeTarget = parentChatWindow.getAttribute('data-iframe-target')||parentChatWindow.getAttribute('dataiframetarget')||'';
+      console.log("target iframe ID",iframeTarget);
 
       const iframe = document.getElementById(iframeTarget) as HTMLIFrameElement;
-      if (iframe && iframe != undefined && iframe != null) {
+      if(iframe && iframe!= undefined && iframe != null){
+
         const iframeDoc = iframe.contentDocument;
-        if (iframeDoc && iframeDoc != undefined && iframeDoc != null) {
+        if(iframeDoc && iframeDoc!= undefined && iframeDoc != null){
+
           const iframeBody = iframeDoc.body;
-          console.log("iframe body", iframeBody);
-          if (iframeBody && iframeBody != undefined && iframeBody != null) {
-            const messageElement = (event.target as HTMLElement)
-              .closest(".assistant-message")
-              ?.querySelector(".message-content");
+          console.log("iframe body",iframeBody)
+          if(iframeBody && iframeBody!= undefined && iframeBody != null){
+            const messageElement = (event.target as HTMLElement).closest(".assistant-message")?.querySelector(".message-content");
 
             if (messageElement) {
               const textContent = messageElement.textContent || "";
 
               await navigator.clipboard.writeText(textContent);
-              const newElement = document.createElement("p");
+              const newElement = document.createElement('p');
               newElement.innerText = textContent;
-              iframeBody.appendChild(newElement);
+              iframeBody.appendChild(newElement)
             } else {
               console.warn("Message content not found");
             }
           }
         }
+        
       }
+      
     }
+      }
   } catch (err) {
     console.error("Failed to copy:", err);
   }
