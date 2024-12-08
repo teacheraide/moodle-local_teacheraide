@@ -25,43 +25,40 @@ const helpItems = reactive<HelpItem[]>([
   {
     id: 1,
     question: "Who is TeacherAIde?",
-    answer: "TeacherAIde is a helpful assistant designed to support teachers in their daily tasks.",
+    answer:
+      "TeacherAIde is a helpful Generative AI assistant designed to support teachers in generating their teaching materials.",
     isExpanded: false,
     isHovered: false,
   },
   {
     id: 2,
-    question: "How to copy answer?",
-    answer: "Click the copy icon (clipboard symbol) below any message to copy its content.",
+    question: "How to copy the assistant response?",
+    answer:
+      "Click the copy icon (clipboard symbol) below any assistant response to copy the content.",
     isExpanded: false,
     isHovered: false,
   },
   {
     id: 3,
-    question: "How to regenerate answer?",
-    answer: "Click the refresh icon below any message to generate a new response.",
+    question: "How to insert the assistant response to the tinyMCE editor?",
+    answer:
+      "Click the share icon below any assistant response to insert it directly into the tinyMCE editor.",
     isExpanded: false,
     isHovered: false,
   },
   {
     id: 4,
-    question: "How to insert answer to editor?",
-    answer: "Click the share icon below any message to insert it into your current document.",
+    question: "How to retrieve chat history?",
+    answer:
+      "Click the list icon at the bottom left corner of the screen to view your chat history.",
     isExpanded: false,
     isHovered: false,
   },
   {
     id: 5,
-    question: "How to retrieve chat history?",
-    answer: "Click the list icon at the bottom left of the screen to view your chat history.",
-    isExpanded: false,
-    isHovered: false,
-  },
-  {
-    id: 6,
-    question: "How to edit or delete chat history?",
+    question: "How to search, edit or delete chat history?",
     answer:
-      "In the chat history view, you can click the pen icon to edit chat session name or click the bin icon to delete the chat session from the chat history.",
+      "In the chat history screen, you can search for your chat with the search box, hover on any chat session and click the pencil icon on the top right corner to edit that session name or click the bin icon to delete that session from the chat history. You can click on any chat session to resume that chat session.",
     isExpanded: false,
     isHovered: false,
   },
