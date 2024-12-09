@@ -25,7 +25,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'local_teacheraide';
-$plugin->release = '1.0.1';
-$plugin->version = 2024120403;
+$plugin->release = '1.0.2';
+$plugin->version = 2024120901;
 $plugin->requires = 2022112800;
 $plugin->maturity = MATURITY_BETA;
